@@ -1,5 +1,3 @@
-<p>The <b>Inno Setup Frequently Asked Questions</b> contains supplemental information not found in the <a href="ishelp.php">documentation</a> or the <a href="iskb.php">Knowledge Base</a>.</p>
-
 <h3>Functionality</h3>
 <ul>
 <li><a href="#lang">Translating Inno Setup's Text</a></li>
@@ -7,7 +5,7 @@
 <li><a href="#msi">Will it support Windows Installer in the future?</a></li>
 <li><a href="#setupicon">How do I change the icon of Setup.exe?</a></li>
 <li><a href="#conditional">Can Inno Setup do a conditional installation - for example, proceed only if a certain registry key or file exists?</a></li>
-<!--! <li><a href="#webinstall">Is there a "web install" feature?</a></li> -->
+<li><a href="#download">Is there a download feature?</a></li>
 <li><a href="#silent">Is it possible to do a silent install without using the /SILENT or /VERYSILENT command-line parameters?</a></li>
 <li><a href="#dirnamereg">Can Setup use the value of a registry entry as the default directory name?</a></li>
 </ul>
@@ -31,7 +29,6 @@
 <h3>Installation Tasks</h3>
 <ul>
 <li><a href="#urls">Creating Internet (URL) Shortcuts</a></li>
-<!--! <li><a href="#quicklaunch">Creating Shortcuts on the Quick Launch Bar</a></li> -->
 <li><a href="#startin">Setting the "Start In" Field on a Shortcut</a></li>
 <li><a href="#assoc">Creating File Associations</a></li>
 <li><a href="#env">Setting Environment Variables</a></li>
@@ -76,18 +73,12 @@
 <b>[Languages]</b><br />
 <font color="blue">Name</font>: mytrans; <font color="blue">MessagesFile</font>: "compiler:MyTranslation.isl"
 </tt></p>
-<p>If you're using a version of Inno Setup prior to 4.0, use this instead:</p>
-<p><tt>
-<b>[Setup]</b><br />
-<font color="blue">MessagesFile</font>=compiler:MyTranslation.isl
-</tt></p>
-<p>There are many contributed translations available for download on the <a href="http://www.jrsoftware.org/is3rdparty.php">Inno Setup Third-Party Files</a> page, as well as a program to assist in editing the .isl file.</p>
+<p>There are many contributed translations available for download on the <a href="http://www.jrsoftware.org/is3rdparty.php">Inno Setup Third-Party Files</a> page.</p>
 </blockquote>
 
 <h4><a name="mbcs">Does it support MBCS (multi-byte character sets)?</a></h4>
 <blockquote>
-<p>Inno Setup 2.0.6 adds complete support for MBCS. It does lead byte checking on all filename and constant parsing, so it should no longer mistake trail bytes for backslashes ("\") or braces ("{").</p>
-<p>Versions prior to 2.0.6 did not include any special support for MBCS.</p>
+<p>Yes. It does lead byte checking on all filename and constant parsing, so it does not mistake trail bytes for backslashes ("\") or braces ("{").</p>
 </blockquote>
 
 <h4><a name="msi">Will it support Windows Installer in the future?</a></h4>
@@ -102,14 +93,13 @@
 
 <h4><a name="conditional">Can Inno Setup do a conditional installation - for example, proceed only if a certain registry key or file exists?</a></h4>
 <blockquote>
-<p>Inno Setup 4 adds support for this through the new Pascal Scripting feature.</p>
-<p>Note: with earlier Inno Setup versions it was already possible to <a href="#difffiles">install different files depending on the Windows version</a>.</p>
+<p>Yes, through the <a href="https://jrsoftware.org/ishelp/index.php?topic=scriptintro">Pascal Scripting feature</a>.</p>
 </blockquote>
 
-<!--! <h4><a name="webinstall">Is there a "web install" feature?</a></h4>
+<h4><a name="download">Is there a download feature?</a></h4>
 <blockquote>
-<p>No, and at the time of this writing there are no plans to add such a feature.</p>
-</blockquote> -->
+<p>Yes, through the Pascal Scripting feature. See the <a href="https://jrsoftware.github.io/issrc/Examples/CodeDownloadFiles.iss">CodeDownloadFiles.iss</a> example script for an example.</p>
+</blockquote>
 
 <h4><a name="silent">Is it possible to do a silent install without using the /SILENT or /VERYSILENT command-line parameters?</a></h4>
 <blockquote>
@@ -120,9 +110,9 @@
 <blockquote>
 <p>Yes. Use a {reg:...} constant in DefaultDirName. For example:</p>
 <p><tt><b>[Setup]</b><br />
-<font color="blue">DefaultDirName</font>={reg:HKLM\Software\My Program,Path|{pf}\My Program}<br />
+<font color="blue">DefaultDirName</font>={reg:HKA\Software\My Program,Path|{autopf}\My Program}<br />
 </tt></p>
-<p>See the "Constants" topic in the Inno Setup help file for more information on {reg:...} constants.</p>
+<p>See the <a href="https://jrsoftware.org/ishelp/index.php?topic=consts">Constants topic</a> in the Inno Setup help file for more information on {reg:...} constants, and the {autopf} constant.</p>
 </blockquote>
 
 
@@ -167,7 +157,6 @@
 <li>It contains files or subdirectories. Use [UninstallDelete] if you need the uninstaller to delete additional files/directories.</li>
 <li>A running process has the directory as its current directory.</li>
 </ul>
-<p>Note: In Inno Setup versions prior to 2.0.1, directories must be specified in either the [Dirs] or [UninstallDelete] sections for them to be deleted by the uninstaller. In newer Inno Setup versions, directories created by [Files] section entries will be deleted automatically by the uninstaller if they didn't exist prior to installation.</p>
 </blockquote>
 
 <h4><a name="batchfile">I run a batch file in the [Run] section, but the window remains on the screen after it finishes executing. I'd like it to "close on exit."</a></h4>
@@ -191,7 +180,7 @@ cls
 
 <h4><a name="olddir">I've changed DefaultDirName in my script, yet when I run Setup it defaults to the directory I had before.</a></h4>
 <blockquote>
-<p>At startup Setup looks in the registry to see if the same application was already installed previously, and if so, it will use the directory of the previous installation as the default directory presented to the user in the wizard. If you uninstall the application and run Setup again, it will use the new DefaultDirName setting. If you wish to disable this feature, set UsePreviousAppDir to "no".</p>
+<p>At startup Setup looks in the registry to see if the <a href="https://jrsoftware.org/ishelp/index.php?topic=sameappnotes">same application</a> was already installed previously, and if so, it will use the directory of the previous installation as the default directory presented to the user in the wizard. If you uninstall the application and run Setup again, it will use the new DefaultDirName setting. If you wish to disable this feature, set <a href="https://jrsoftware.org/ishelp/index.php?topic=setup_usepreviousappdir">UsePreviousAppDir</a> to "no".</p>
 </blockquote>
 
 <h4><a name="twoicons">I have two [Icons] entries with the same Name, but only one of them gets installed.</a></h4>
@@ -206,20 +195,16 @@ cls
 <p>A simple way to check if a program does that is to run "START /WAIT ProgramName.exe" from the command line, and see if you are returned to the command prompt before the program exits.</p>
 </blockquote>
 
-<h4><a name="missinglanguages">Some languages are missing on the <i>Select Setup Language</i> dialog, or it doesn't show up at all.</a></h4>
+<h4><a name="missinglanguages">Some languages are missing on the <i>Select Setup Language</i> dialog, or it doesn't show up at all even though I've added multiple languages.</a></h4>
 <blockquote>
-<p>You are using Non Unicode Inno Setup:</li>
-<p>Beginning with Inno Setup 4.2.2, languages specified in the [Languages] section that cannot be displayed under the active Windows ANSI code page are not listed in the <i>Select Setup Language</i> dialog. For example, Russian text can only be displayed properly if the active code page is 1251; if the user isn't running code page 1251 they will not see Russian as an option.</p>
-<p>On Windows XP, the active code page may be changed by going to <i>Regional and Language Options</i> in Control Panel, and setting <i>Language for non-Unicode programs</i> on the Advanced tab. On Windows 2000, the active code page may be changed by going to <i>Regional Options</i> in Control Panel, and clicking <i>Set default...</i>.</p>
-<p>If you are sure you're running in the correct code page and a language still isn't being listed, then most likely <tt>LanguageCodePage</tt> is set incorrectly inside the language's .isl file.</p>
-<p>If you would like to force all languages to be visible regardless of whether they can be displayed properly under the active code page, set the <tt>ShowUndisplayableLanguages</tt> [Setup] section directive (new in Inno Setup 5.1.7).</p>
+<p>You are using an old Non Unicode version of Inno Setup.</p>
 </blockquote>
 
 <h4><a name="missingmappeddrives">Mapped drives aren't showing up on the <i>Select Destination Location</i> wizard page, or cannot be browsed into.</a></h4>
 <blockquote>
 <p>Your installation requires administrative privileges and is running elevated:</li>
 <p>Mapped drives are not available (by default) to any elevated application. This was introduced in Windows Vista.</p>
-<p>There is an <a href="https://technet.microsoft.com/en-gb/library/ee844140.aspx">option</a> to make them available for same user elevation, but this won't help the situation when run from a LUA where the user changes.</p>
+<p>There is an <a href="https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/ee844140(v=ws.10)">option</a> to make them available for same user elevation, but this won't help the situation when run from a LUA where the user changes.</p>
 </blockquote>
 
 
@@ -240,14 +225,6 @@ URL=http://web.site.address/
 <font color="blue">Name</font>: "{group}\Visit My Web Site"; <font color="blue">Filename</font>: "{app}\website.url"<br />
 </tt></p>
 </blockquote>
-
-<!--! <h4><a name="quicklaunch">Creating Shortcuts on the Quick Launch Bar</a></h4>
-<blockquote>
-<p>Upgrade to at least Inno Setup 1.3.11, then use:</p>
-<p><tt><b>[Icons]</b><br />
-<font color="blue">Name</font>: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\My Program"; <font color="blue">Filename</font>: "{app}\MyProg.exe"<br />
-</tt></p>
-</blockquote> -->
 
 <h4><a name="startin">Setting the "Start In" Field on a Shortcut</a></h4>
 <blockquote>
@@ -304,7 +281,7 @@ URL=http://web.site.address/
 
 <h4><a name="closeonexit">Setting the "Close on Exit" Box on a Shortcut to an MS-DOS Program</a></h4>
 <blockquote>
-<p>Inno Setup version 1.3.15 and later includes support for "closeonexit" and "dontcloseonexit" flags in the [Icons] section.</p>
+<p>Use the "closeonexit" and "dontcloseonexit" flags in the [Icons] section.</p>
 </blockquote>
 
 <h4><a name="backup">Making Backups Before Replacing Files</a></h4>
@@ -315,18 +292,12 @@ URL=http://web.site.address/
 
 <h4><a name="difffiles">Installing Different Files Depending on Windows Version</a></h4>
 <blockquote>
-<p>That can be done via MinVersion and/or OnlyBelowVersion parameters on an entry. See the Common Parameters topic in the documentation for details.</p>
-<!--! <p>Here is a simple example of how to install one file on NT platforms (Windows NT/2000/XP/2003) and another file on non-NT platforms (Windows 95/98/Me):</p>
-<p><tt><b>[Files]</b><br />
-<font color="blue">Source</font>: "{app}\WinNT2000XP.exe"; <font color="blue">DestDir</font>: "{app}"; <font color="blue">MinVersion</font>: 0, 1<br />
-<font color="blue">Source</font>: "{app}\Win9598Me.exe";   <font color="blue">DestDir</font>: "{app}"; <font color="blue">MinVersion</font>: 1, 0</tt></p>
-<p>"0" means never install; "1" means install on any version (i.e. version 1.0 or later).</p>
-<p>Note: The above technique isn't limited to the [Files] section; MinVersion and OnlyBelowVersion can be used in most sections.</p> -->
+<p>This can be done via MinVersion and/or OnlyBelowVersion parameters on an entry. See the <a href="https://jrsoftware.org/ishelp/index.php?topic=commonparams">Common Parameters topic</a> in the documentation for details.</p>
 </blockquote>
 
 <h4><a name="perms">Settings Permissions on Files, Directories, or Registry Keys</a></h4>
 <blockquote>
-<p>Beginning with Inno Setup 4.1.0, the [Dirs], [Files], and [Registry] sections support Permissions parameters for setting permissions on directories, files, and registry keys respectively.</p>
+<p>The [Dirs], [Files], and [Registry] sections support Permissions parameters for setting permissions on directories, files, and registry keys respectively.</p>
 <p>If you have more advanced needs, take a look at <a href="https://helgeklein.com/setacl/">SetACL</a>.</p>
 </blockquote>
 
@@ -434,8 +405,7 @@ end;<br />
 
 <h4><a name="limits">Are there any limits on how many files, etc. may be included in an installation?</a></h4>
 <blockquote>
-<p>Inno Setup places no arbitrary limits on how many files, shortcuts, registry entries, etc. that you may include in an installation. However, keep in mind that Setup does need memory for each entry in a script. For example, roughly 120 bytes of memory is needed for each [Files] entry.</p>
-<p>In Inno Setup 3.x and earlier, installations and individual files cannot exceed 2 GB, because it does not use 64-bit arithmetic in most places. This has been addressed in Inno Setup 4.</p>
+<p>Inno Setup places no arbitrary limits on how many files, shortcuts, registry entries, etc. that you may include in an installation.</p>
 </blockquote>
 
 <h4><a name="cancel">What exactly happens when the user clicks Cancel during an installation?</a></h4>
