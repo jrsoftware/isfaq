@@ -27,6 +27,8 @@
 <li><a href="#runwait">Setup isn't waiting for programs executed by [Run] entries to finish.</a></li>
 <li><a href="#missinglanguages">Some languages are missing on the <i>Select Setup Language</i> dialog, or it doesn't show up at all.</a></li>
 <li><a href="#missingmappeddrives">Mapped drives aren't showing up on the <i>Select Destination Location, or cannot be browsed into.</i> wizard page.</a></li>
+<li><a href="#custom">My installation needs to do something that Inno Setup apparently doesn't have a feature for.</a></li>
+<li><a href="#wildcard">Wildcard matches unexpected extensions.</a></li>
 </ul>
 
 <h3>Installation Tasks</h3>
@@ -39,7 +41,8 @@
 <li><a href="#backup">Making Backups Before Replacing Files</a></li>
 <li><a href="#difffiles">Installing Different Files Depending on Windows Version</a></li>
 <li><a href="#perms">Settings Permissions on Files, Directories, or Registry Keys</a></li>
-<li><a href="#custom">My installation needs to do something that Inno Setup apparently doesn't have a feature for.</a></li>
+<li><a href="#startup">Starting a program when Windows starts</a></li>
+<li><a href="#runbatchfile">Running batch files</a></li>
 </ul>
 
 <h3>How Do I Install...?</h3>
@@ -74,7 +77,7 @@
 
 <h4><a name="lang">Translating Inno Setup's Text</a></h4>
 <blockquote>
-<p>Translating Inno Setup's text into another language does not require modifying the source code. Simply make a copy of the Default.isl file (included with Inno Setup) and start editing the text in it. (Do not directly edit the Default.isl file, otherwise your changes will be lost when you install a new Inno Setup version.) See the "[Messages] Section" topic in the Inno Setup help file for some important tips.</p>
+<p>Translating Inno Setup's text into another language does not require modifying the source code. Simply make a copy of the Default.isl file (included with Inno Setup) and start editing the text in it. (Do not directly edit the Default.isl file, otherwise your changes will be lost when you install a new Inno Setup version.) See the "[Messages] Section" topic in the documentation for some important tips.</p>
 <p>Once you have finished creating the new .isl file, create a [Languages] section to tell the compiler to use it:</p>
 <p><tt>
 <b>[Languages]</b><br />
@@ -119,7 +122,8 @@
 <p><tt><b>[Setup]</b><br />
 <font color="blue">DefaultDirName</font>={reg:HKA\Software\My Program,Path|{autopf}\My Program}<br />
 </tt></p>
-<p>See the <a href="https://jrsoftware.org/ishelp/index.php?topic=consts">Constants topic</a> in the Inno Setup help file for more information on {reg:...} constants, and the {autopf} constant.</p>
+<p>See the <a href="https://jrsoftware.org/ishelp/index.php?topic=consts">Constants topic</a> in the documentation for more information on {reg:...} constants, and the {autopf} constant.</p>
+<p>Also see the <a href="https://jrsoftware.org/ishelp/index.php?topic=admininstallmode">Non Administrative Install Mode topic</a> in the documentation for details on the HKA key value.</p>
 </blockquote>
 
 <h4><a name="deluserkeys">Is it possible to delete keys inside every users' HKEY_CURRENT_USER registry hive?</a></h4>
@@ -157,7 +161,7 @@
 
 <h4><a name="errorquotes">Compiler says "Mismatched or misplaced quotes on parameter"</a></h4>
 <blockquote>
-<p>This message is typically displayed if you try to embed a quote (") character in a parameter's data, but do not double it as required. Read the "Parameters in Sections" topic in the Inno Setup help file for more information.</p>
+<p>This message is typically displayed if you try to embed a quote (") character in a parameter's data, but do not double it as required. Read the "Parameters in Sections" topic in the documentation for more information.</p>
 </blockquote>
 
 <h4><a name="workingdir">My application can't find any of its files when it is started from the shortcut created by Setup. It works fine when I double-click the application's EXE in Explorer.</a></h4>
@@ -243,6 +247,47 @@ cls
 <p>There is an <a href="https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/ee844140(v=ws.10)">option</a> to make them available for same user elevation, but this won't help the situation when run from a LUA where the user changes.</p>
 </blockquote>
 
+<h4><a name="custom">My installation needs to do something that Inno Setup apparently doesn't have a feature for.</a></h4>
+<blockquote>
+<p>Use the <a href="https://jrsoftware.org/ishelp/index.php?topic=scriptintro">Pascal Scripting feature</a> or the [Run] section:</p>
+<p>The [Run] section is an oft overlooked yet simple method of performing custom installation tasks. First, write a small program in the development tool of your choice (preferably one that creates stand-alone EXEs, such as Delphi) that performs the desired task, and copy its EXE to your script directory. Next, place an entry in the [Files] script section telling Setup to copy the EXE to the install's temporary directory ("{tmp}"):</p>
+<pre class="snippet">
+[Files]
+Source: "ModifyAutoexec.exe"; DestDir: "{tmp}"
+</pre>
+<p>Then add a [Run] section entry, telling Setup to execute the EXE after all other installation steps:</p>
+<pre class="snippet">
+[Run]
+Filename: "{tmp}\ModifyAutoexec.exe"
+</pre>
+<p>If the program needs additional information, such as the value of the "{app}" constant, you could pass it via a command line parameter, i.e.:</p>
+<pre class="snippet">
+[Run]
+Filename: "{tmp}\ModifyAutoexec.exe"; Parameters: """{app}"""
+</pre>
+<p>You could alternatively incorporate the installation task into your application's main EXE and have it perform the task when called with a special command line parameter. For example:</p>
+<pre class="snippet">
+[Run]
+Filename: "{app}\MyProgram.exe"; Parameters: "/DoTheTask"
+</pre>
+</blockquote>
+
+<h4><a name="wildcard">Wildcard matches unexpected extensions.</a></h4>
+<blockquote>
+<p>If the following wildcard is used in a [Files] section entry:</p>
+<pre class="snippet">
+[Files]
+Source: "*.htm"; DestDir: "{app}"
+</pre>
+<p>you may find that it matches not only files with an .htm extension, but also files with an .html extension.</p>
+<p>This happens because in Windows, wildcards match both long filenames and 8.3 aliases ("short filenames"). By default, a file named "webpage.html" will have the 8.3 alias "WEBPAG~1.HTM"; hence, <tt>*.htm</tt> will match the file.</p>
+<p>To avoid this, add an <tt>Excludes</tt> parameter to explicitly filter out files with an .html extension:</p>
+<pre class="snippet">
+[Files]
+Source: "*.htm"; Excludes: "*.html"; DestDir: "{app}"
+</pre>
+</blockquote>
+
 
 
 <hr /><h2>Installation Tasks</h2>
@@ -305,6 +350,8 @@ URL=http://web.site.address/
 <font color="blue">Root</font>: HKA; <font color="blue">Subkey</font>: "Software\Classes\Applications\MyProg.exe\SupportedTypes"; <font color="blue">ValueType</font>: string; <font color="blue">ValueName</font>: ".myp"; <font color="blue">ValueData</font>: ""
 </tt></p>
 
+<p>Also see the <a href="https://jrsoftware.org/ishelp/index.php?topic=admininstallmode">Non Administrative Install Mode topic</a> in the documentation for details on the HKA key value.</p>
+
 </blockquote>
 
 <h4><a name="env">Setting Environment Variables</a></h4>
@@ -337,9 +384,31 @@ URL=http://web.site.address/
 <p>If you have more advanced needs, take a look at <a href="https://helgeklein.com/setacl/">SetACL</a>.</p>
 </blockquote>
 
-<h4><a name="custom">My installation needs to do something that Inno Setup apparently doesn't have a feature for.</a></h4>
+<h4><a name="startup">Starting a program when Windows starts</a></h4>
 <blockquote>
-<p>See the Knowledge Base article <a href="https://jrsoftware.org/iskb.php?custom">Implementing Custom Functionality</a>.</p>
+<p>There are two different ways to accomplish this:</p>
+<ol>
+<li>Create a shortcut in the Startup group:
+<pre class="snippet">[Icons] 
+Name: "{autostartup}\My Program"; Filename: "{app}\MyProg.exe"
+</pre>
+</li>
+<li>Create a value in the Run key of the registry:
+<pre class="snippet">[Registry]
+Root: HKA; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "YourApplicationName"; ValueData: """{app}\YourApplicationName.exe"""; Flags: uninsdeletevalue</pre>
+</li>
+</ol>
+<p>See the <a href="https://jrsoftware.org/ishelp/index.php?topic=consts">Constants topic</a> in the documentation for more information on the {autostartup} constant.</p>
+<p>Also see the <a href="https://jrsoftware.org/ishelp/index.php?topic=admininstallmode">Non Administrative Install Mode topic</a> in the documentation for details on the HKA key value.</p>
+</blockquote>
+
+<h4><a name="runbatchfile">Running batch files</a></h4>
+<blockquote>
+<p>You may run a batch file by specifying the filename directly in the <tt>Filename</tt> parameter of a [Run] section entry:</p>
+<pre class="snippet">
+[Run]
+Filename: "{app}\YourBatchFile.bat"
+</pre>
 </blockquote>
 
 
@@ -432,6 +501,7 @@ end;<br />
 <li>The "{group}" constant always points to the current user's profile, as opposed to the All Users profile.</li>
 <li>The program may be uninstalled by any user. (When an administrator installs a program, only an administrator is allowed to uninstall it.)</li>
 </ul>
+<p>Also see the <a href="https://jrsoftware.org/ishelp/index.php?topic=admininstallmode">Non Administrative Install Mode topic</a> in the documentation for details.</p>
 </blockquote>
 
 
