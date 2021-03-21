@@ -43,6 +43,7 @@
 <li><a href="#perms">Settings Permissions on Files, Directories, or Registry Keys</a></li>
 <li><a href="#startup">Starting a program when Windows starts</a></li>
 <li><a href="#runbatchfile">Running batch files</a></li>
+<li><a href="#mutexsessions">Detecting instances running in any user session with AppMutex</a></li>
 </ul>
 
 <h3>How Do I Install...?</h3>
@@ -251,41 +252,29 @@ cls
 <blockquote>
 <p>Use the <a href="https://jrsoftware.org/ishelp/index.php?topic=scriptintro">Pascal Scripting feature</a> or the [Run] section:</p>
 <p>The [Run] section is an oft overlooked yet simple method of performing custom installation tasks. First, write a small program in the development tool of your choice (preferably one that creates stand-alone EXEs, such as Delphi) that performs the desired task, and copy its EXE to your script directory. Next, place an entry in the [Files] script section telling Setup to copy the EXE to the install's temporary directory ("{tmp}"):</p>
-<pre class="snippet">
-[Files]
-Source: "ModifyAutoexec.exe"; DestDir: "{tmp}"
-</pre>
+<p><tt><b>[Files]</b><br />
+<font color="blue">Source</font>: "ModifyAutoexec.exe"; <font color="blue">DestDir</font>: "{tmp}"</tt></p>
 <p>Then add a [Run] section entry, telling Setup to execute the EXE after all other installation steps:</p>
-<pre class="snippet">
-[Run]
-Filename: "{tmp}\ModifyAutoexec.exe"
-</pre>
+<p><tt><b>[Run]</b><br />
+<font color="blue">Filename</font>: "{tmp}\ModifyAutoexec.exe"</tt></p>
 <p>If the program needs additional information, such as the value of the "{app}" constant, you could pass it via a command line parameter, i.e.:</p>
-<pre class="snippet">
-[Run]
-Filename: "{tmp}\ModifyAutoexec.exe"; Parameters: """{app}"""
-</pre>
+<p><tt><b>[Run]</b><br />
+<font color="blue">Filename</font>: "{tmp}\ModifyAutoexec.exe"; <font color="blue">Parameters</font>: """{app}"""</tt></p>
 <p>You could alternatively incorporate the installation task into your application's main EXE and have it perform the task when called with a special command line parameter. For example:</p>
-<pre class="snippet">
-[Run]
-Filename: "{app}\MyProgram.exe"; Parameters: "/DoTheTask"
-</pre>
+<p><tt><b>[Run]</b><br />
+<font color="blue">Filename</font>: "{app}\MyProgram.exe"; <font color="blue">Parameters</font>: "/DoTheTask"</tt></p>
 </blockquote>
 
 <h4><a name="wildcard">Wildcard matches unexpected extensions.</a></h4>
 <blockquote>
 <p>If the following wildcard is used in a [Files] section entry:</p>
-<pre class="snippet">
-[Files]
-Source: "*.htm"; DestDir: "{app}"
-</pre>
+<p><tt><b>[Files]</b><br />
+<font color="blue">Source</font>: "*.htm"; <font color="blue">DestDir</font>: "{app}"</tt></p>
 <p>you may find that it matches not only files with an .htm extension, but also files with an .html extension.</p>
 <p>This happens because in Windows, wildcards match both long filenames and 8.3 aliases ("short filenames"). By default, a file named "webpage.html" will have the 8.3 alias "WEBPAG~1.HTM"; hence, <tt>*.htm</tt> will match the file.</p>
 <p>To avoid this, add an <tt>Excludes</tt> parameter to explicitly filter out files with an .html extension:</p>
-<pre class="snippet">
-[Files]
-Source: "*.htm"; Excludes: "*.html"; DestDir: "{app}"
-</pre>
+<p><tt><b>[Files]</b><br />
+<font color="blue">Source</font>: "*.htm"; <font color="blue">Excludes</font>: "*.html"; <font color="blue">DestDir</font>: "{app}"</tt></p>
 </blockquote>
 
 
@@ -388,14 +377,13 @@ URL=http://web.site.address/
 <blockquote>
 <p>There are two different ways to accomplish this:</p>
 <ol>
-<li>Create a shortcut in the Startup group:
-<pre class="snippet">[Icons] 
-Name: "{autostartup}\My Program"; Filename: "{app}\MyProg.exe"
-</pre>
+<li>Either create a shortcut in the Startup group:<br /><br />
+<tt><b>[Icons]</b><br />
+<font color="blue">Name</font>: "{autostartup}\My Program"; <font color="blue">Filename</font>: "{app}\MyProg.exe"</tt>
 </li>
-<li>Create a value in the Run key of the registry:
-<pre class="snippet">[Registry]
-Root: HKA; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "YourApplicationName"; ValueData: """{app}\YourApplicationName.exe"""; Flags: uninsdeletevalue</pre>
+<li>Or create a value in the Run key of the registry:<br /><br />
+<tt><b>[Registry]</b><br />
+<font color="blue">Root</font>: HKA; <font color="blue">Subkey</font>: "SOFTWARE\Microsoft\Windows\CurrentVersion\Run"; <font color="blue">ValueType</font>: string; <font color="blue">ValueName</font>: "MyProg"; <font color="blue">ValueData</font>: """{app}\MyProg.exe"""; <font color="blue">Flags</font>: uninsdeletevalue</tt>
 </li>
 </ol>
 <p>See the <a href="https://jrsoftware.org/ishelp/index.php?topic=consts">Constants topic</a> in the documentation for more information on the {autostartup} constant.</p>
@@ -405,10 +393,52 @@ Root: HKA; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Run"; ValueType: s
 <h4><a name="runbatchfile">Running batch files</a></h4>
 <blockquote>
 <p>You may run a batch file by specifying the filename directly in the <tt>Filename</tt> parameter of a [Run] section entry:</p>
-<pre class="snippet">
-[Run]
-Filename: "{app}\YourBatchFile.bat"
-</pre>
+<p><tt><b>[Run]</b><br />
+<font color="blue">Filename</font>: "{app}\YourBatchFile.bat"</tt></p>
+</blockquote>
+
+<h4><a name="mutexsessions">Detecting instances running in any user session with AppMutex</a></h4>
+<blockquote>
+<p><tt>AppMutex</tt> by default will not find mutexes created in user sessions other than the one Setup/Uninstall is running under. This is because each user session has its own kernel namespace.</p>
+<p>To detect mutexes created in other sessions, your application must create two mutexes: one with a <tt>Global\</tt> prefix and the other without.</p>
+<p>Mutexes with the <tt>Global\</tt> prefix are accessible from any user session. A like-named mutex must also be created in the session namespace (i.e. without the <tt>Global\</tt> prefix) in case the creation of the Global mutex failed due to security restrictions or lack of operating system support (versions of Windows NT prior to 4.0 Terminal Server Edition don't support the <tt>Global\</tt> prefix).</p>
+<p>Additionally, a special security descriptor must be passed in each of the CreateMutex() calls to ensure the mutex is accessible by different users.</p>
+<p>Here is an example of how to create the two mutexes in Delphi:</p>
+<p><tt>procedure CreateMutexes(const MutexName: String);<br />
+{ Creates the two mutexes checked for by the installer/uninstaller to see if<br />
+&nbsp;&nbsp;the program is still running.<br />
+&nbsp;&nbsp;One of the mutexes is created in the global name space (which makes it<br />
+&nbsp;&nbsp;possible to access the mutex across user sessions in Windows XP); the other<br />
+&nbsp;&nbsp;is created in the session name space (because versions of Windows NT prior<br />
+&nbsp;&nbsp;to 4.0 TSE don't have a global name space and don't support the 'Global\'<br />
+&nbsp;&nbsp;prefix). }<br />
+const<br />
+&nbsp;&nbsp;SECURITY_DESCRIPTOR_REVISION = 1;  { Win32 constant not defined in Delphi 3 }<br />
+var<br />
+&nbsp;&nbsp;SecurityDesc: TSecurityDescriptor;<br />
+&nbsp;&nbsp;SecurityAttr: TSecurityAttributes;<br />
+begin<br />
+&nbsp;&nbsp;{ By default on Windows NT, created mutexes are accessible only by the user<br />
+&nbsp;&nbsp;&nbsp;&nbsp;running the process. We need our mutexes to be accessible to all users, so<br />
+&nbsp;&nbsp;&nbsp;&nbsp;that the mutex detection can work across user sessions in Windows XP. To<br />
+&nbsp;&nbsp;&nbsp;&nbsp;do this we use a security descriptor with a null DACL. }<br />
+&nbsp;&nbsp;InitializeSecurityDescriptor(@SecurityDesc, SECURITY_DESCRIPTOR_REVISION);<br />
+&nbsp;&nbsp;SetSecurityDescriptorDacl(@SecurityDesc, True, nil, False);<br />
+&nbsp;&nbsp;SecurityAttr.nLength := SizeOf(SecurityAttr);<br />
+&nbsp;&nbsp;SecurityAttr.lpSecurityDescriptor := @SecurityDesc;<br />
+&nbsp;&nbsp;SecurityAttr.bInheritHandle := False;<br />
+&nbsp;&nbsp;CreateMutex(@SecurityAttr, False, PChar(MutexName));<br />
+&nbsp;&nbsp;CreateMutex(@SecurityAttr, False, PChar('Global\' + MutexName));<br />
+end;<br />
+<br />
+...<br />
+<br />
+begin<br />
+&nbsp;&nbsp;CreateMutexes('<b>YourMutexNameGoesHere</b>');<br />
+end;</tt></p>
+<p>In your script, set <tt>AppMutex</tt> as follows:</p>
+<p><tt><b>[Setup]</b><br />
+<font color="blue">AppMutex</font>=<b>YourMutexNameGoesHere</b>,Global\<b>YourMutexNameGoesHere</b></tt></p>
 </blockquote>
 
 
