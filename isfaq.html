@@ -419,41 +419,36 @@ URL=http://web.site.address/
 <blockquote>
 <p><tt>AppMutex</tt> by default will not find mutexes created in user sessions other than the one Setup/Uninstall is running under. This is because each user session has its own kernel namespace.</p>
 <p>To detect mutexes created in other sessions, your application must create two mutexes: one with a <tt>Global\</tt> prefix and the other without.</p>
-<p>Mutexes with the <tt>Global\</tt> prefix are accessible from any user session. A like-named mutex must also be created in the session namespace (i.e. without the <tt>Global\</tt> prefix) in case the creation of the Global mutex failed due to security restrictions or lack of operating system support (versions of Windows NT prior to 4.0 Terminal Server Edition don't support the <tt>Global\</tt> prefix).</p>
+<p>Mutexes with the <tt>Global\</tt> prefix are accessible from any user session. A like-named mutex must also be created in the session namespace (i.e. without the <tt>Global\</tt> prefix) in case the creation of the Global mutex failed due to security restrictions.</p>
 <p>Additionally, a special security descriptor must be passed in each of the CreateMutex() calls to ensure the mutex is accessible by different users.</p>
 <p>Here is an example of how to create the two mutexes in Delphi:</p>
-<p><tt>procedure CreateMutexes(const MutexName: String);<br />
-{ Creates the two mutexes checked for by the installer/uninstaller to see if<br />
-&nbsp;&nbsp;the program is still running.<br />
-&nbsp;&nbsp;One of the mutexes is created in the global name space (which makes it<br />
-&nbsp;&nbsp;possible to access the mutex across user sessions in Windows XP); the other<br />
-&nbsp;&nbsp;is created in the session name space (because versions of Windows NT prior<br />
-&nbsp;&nbsp;to 4.0 TSE don't have a global name space and don't support the 'Global\'<br />
-&nbsp;&nbsp;prefix). }<br />
-const<br />
-&nbsp;&nbsp;SECURITY_DESCRIPTOR_REVISION = 1;  { Win32 constant not defined in Delphi 3 }<br />
-var<br />
+<p><tt><font color="blue">procedure</font> CreateMutexes(<font color="blue">const</font> MutexName: String);<br />
+<font color="green">{ Creates the two mutexes checked for by the installer/uninstaller to see if<br />
+&nbsp;&nbsp;the program is still running. }</font><br />
+<font color="blue">const</font><br />
+&nbsp;&nbsp;SECURITY_DESCRIPTOR_REVISION = <font color="#ffa500">1</font>;<br />
+<font color="blue">var</font><br />
 &nbsp;&nbsp;SecurityDesc: TSecurityDescriptor;<br />
 &nbsp;&nbsp;SecurityAttr: TSecurityAttributes;<br />
-begin<br />
-&nbsp;&nbsp;{ By default on Windows NT, created mutexes are accessible only by the user<br />
-&nbsp;&nbsp;&nbsp;&nbsp;running the process. We need our mutexes to be accessible to all users, so<br />
-&nbsp;&nbsp;&nbsp;&nbsp;that the mutex detection can work across user sessions in Windows XP. To<br />
-&nbsp;&nbsp;&nbsp;&nbsp;do this we use a security descriptor with a null DACL. }<br />
+<font color="blue">begin</font><br />
+&nbsp;&nbsp;<font color="green">{ By default created mutexes are accessible only by the user running<br />
+&nbsp;&nbsp;&nbsp;&nbsp;the process. We need our mutexes to be accessible to all users, so<br />
+&nbsp;&nbsp;&nbsp;&nbsp;that the mutex detection can work across user sessions. To do this<br />
+&nbsp;&nbsp;&nbsp;&nbsp;we use a security descriptor with a null DACL. }</font><br />
 &nbsp;&nbsp;InitializeSecurityDescriptor(@SecurityDesc, SECURITY_DESCRIPTOR_REVISION);<br />
-&nbsp;&nbsp;SetSecurityDescriptorDacl(@SecurityDesc, True, nil, False);<br />
+&nbsp;&nbsp;SetSecurityDescriptorDacl(@SecurityDesc, True, <font color="blue">nil</font>, False);<br />
 &nbsp;&nbsp;SecurityAttr.nLength := SizeOf(SecurityAttr);<br />
 &nbsp;&nbsp;SecurityAttr.lpSecurityDescriptor := @SecurityDesc;<br />
 &nbsp;&nbsp;SecurityAttr.bInheritHandle := False;<br />
 &nbsp;&nbsp;CreateMutex(@SecurityAttr, False, PChar(MutexName));<br />
-&nbsp;&nbsp;CreateMutex(@SecurityAttr, False, PChar('Global\' + MutexName));<br />
-end;<br />
+&nbsp;&nbsp;CreateMutex(@SecurityAttr, False, PChar(<font color="#ffa500">'Global\'</font> + MutexName));<br />
+<font color="blue">end</font>;<br />
 <br />
 ...<br />
 <br />
-begin<br />
-&nbsp;&nbsp;CreateMutexes('<b>YourMutexNameGoesHere</b>');<br />
-end;</tt></p>
+<font color="blue">begin</font><br />
+&nbsp;&nbsp;CreateMutexes(<font color="#ffa500">'<b>YourMutexNameGoesHere</b>'</font>);<br />
+<font color="blue">end</font>;</tt></p>
 <p>In your script, set <tt>AppMutex</tt> as follows:</p>
 <p><tt>
 <b>[Setup]</b><br />
