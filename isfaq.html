@@ -44,6 +44,7 @@
 <li><a href="#twoicons">I have two [Icons] entries with the same Name, but only one of them gets installed.</a></li>
 <li><a href="#runwait">Setup isn't waiting for programs executed by [Run] entries to finish.</a></li>
 <li><a href="#missinglanguages">Some languages are missing on the <i>Select Setup Language</i> dialog, or it doesn't show up at all.</a></li>
+<li><a href="#encodingissue">Inno Setup (version=>6) Unicode encoding issue with messages in ISS script.</a></li>
 <li><a href="#missingmappeddrives">Mapped drives aren't showing up on the <i>Select Destination Location, or cannot be browsed into.</i> wizard page.</a></li>
 <li><a href="#custom">My installation needs to do something that Inno Setup apparently doesn't have a feature for.</a></li>
 <li><a href="#wildcard">Wildcard matches unexpected extensions.</a></li>
@@ -252,6 +253,12 @@ cls
 <h4><a name="missinglanguages">Some languages are missing on the <i>Select Setup Language</i> dialog, or it doesn't show up at all even though I've added multiple languages.</a></h4>
 <blockquote>
 <p>You are using an old Non Unicode version of Inno Setup.</p>
+</blockquote>
+
+<h4><a name="encodingissue">Inno Setup (version=>6) Unicode encoding issue with messages in ISS script.</a></h4>
+<blockquote>
+<p>The .iss file needs to have <bold>UTF-8 BOM</bold>, if it includes Unicode/UTF-8 strings.</p>
+See this issue on stackoverflow: https://stackoverflow.com/questions/49922735/inno-setup-unicode-encoding-issue-with-messages-in-iss-script
 </blockquote>
 
 <h4><a name="missingmappeddrives">Mapped drives aren't showing up on the <i>Select Destination Location</i> wizard page, or cannot be browsed into.</a></h4>
@@ -478,7 +485,7 @@ URL=http://web.site.address/
 <p>The recommended way to install an OCX file is as follows.</p>
 <p><tt>
 <b>[Files]</b><br />
-<font color="blue">Source</font>: "ComCtl32.ocx";	<font color="blue">DestDir</font>: "{sys}";	<font color="blue">Flags</font>: restartreplace sharedfile regserver
+<font color="blue">Source</font>: "ComCtl32.ocx"; <font color="blue">DestDir</font>: "{sys}"; <font color="blue">Flags</font>: restartreplace sharedfile regserver
 </tt></p>
 </blockquote>
 
