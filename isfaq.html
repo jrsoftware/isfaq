@@ -49,6 +49,7 @@
 <li><a href="#wildcard">Wildcard matches unexpected extensions.</a></li>
 <li><a href="#filesemptydirs">Empty directories are not included when "recursesubdirs" flag is used on a [Files] entry.</a></li>
 <li><a href="#filenotreplaced">Setup isn't replacing a particular file.</a></li>
+<li><a href="#encodingissue">Why text in installer has the encoding issue, while .iss file saved in encoding 'UTF-8'?</a></li>  
 </ul>
 
 <h3>Installation Tasks</h3>
@@ -307,6 +308,19 @@ cls
 <p>Compare the version numbers on the existing file and the new file by right-clicking them in Windows Explorer and selecting <i>Properties</i>. By default, Inno Setup will not replace an existing file unless the existing file has no version info or has a lower version number.</p>
 <p>The binary version numbers of files are what Inno Setup actually compares and the <a href="https://jrsoftware.org/ishelp/index.php?topic=setupcmdline&anchor=LOG">/LOG</a> switch can be handy here. The log will show the binary version numbers of files and why certain files were not replaced.</p>
 <p>If you want to force a file to be replaced regardless of its version number, add the <tt>ignoreversion</tt> flag to the [Files] section entry. This flag should only be used on files private to your application, <b>never</b> on shared system files.</p>
+</blockquote>
+
+<h4><a name="encodingissue">Why text in installer has the encoding issue, while .iss file saved in encoding 'UTF-8'?</a></h4>
+<blockquote>
+<p>I am using Inno Setup version 6.2.2 (version=>6).
+Starting with Inno Setup 6, Inno Setup supports UTF-8 encoded .iss files. See documentation <a href="https://jrsoftware.org/ishelp/index.php?topic=unicode">
+But using Russian text in .iss file gives wrong encoding simbols in installer.
+Russian text was in fields like: 
+[Setup]
+AppName="Название программы"
+AppVerName=".."</p>
+<p>Solving:
+The .iss file needs to have <bold>UTF-8 BOM</bold> encoding, if it includes Unicode/UTF-8 strings.</p>
 </blockquote>
 
 
