@@ -93,7 +93,7 @@
 <p>Once you have finished creating the new .isl file, create a [Languages] section to tell the compiler to use it:</p>
 <p><tt>
 <b>[Languages]</b><br />
-<font color="blue">Name</font>: mytrans; <font color="blue">MessagesFile</font>: "compiler:MyTranslation.isl"
+<font color="#0078D4">Name</font>: mytrans; <font color="#0078D4">MessagesFile</font>: "compiler:MyTranslation.isl"
 </tt></p>
 <p>There are many contributed translations available for download on the <a href="https://jrsoftware.org/files/istrans/">Inno Setup Translations</a> page.</p>
 <p>Note that the captions of buttons in message boxes can't be translated. These captions are always in the same language as Windows itself. So if the user is running an English edition of Windows, they will see English button captions. This is normal behavior for any application that displays message boxes using the Windows MessageBox() function.</p>
@@ -134,7 +134,7 @@
 <p>Yes. Use a {reg:...} constant in DefaultDirName. For example:</p>
 <p><tt>
 <b>[Setup]</b><br />
-<font color="blue">DefaultDirName</font>={reg:HKA\Software\My Program,Path|{autopf}\My Program}<br />
+<font color="#0078D4">DefaultDirName</font>={reg:HKA\Software\My Program,Path|{autopf}\My Program}<br />
 </tt></p>
 <p>See the <a href="https://jrsoftware.org/ishelp/index.php?topic=consts">Constants topic</a> in the documentation for more information on {reg:...} constants, and the {autopf} constant.</p>
 <p>Also see the <a href="https://jrsoftware.org/ishelp/index.php?topic=admininstallmode">Non Administrative Install Mode topic</a> in the documentation for details on the HKA key value.</p>
@@ -267,19 +267,19 @@ cls
 <p>The [Run] section is an oft overlooked yet simple method of performing custom installation tasks. First, write a small program in the development tool of your choice (preferably one that creates stand-alone EXEs, such as Delphi) that performs the desired task, and copy its EXE to your script directory. Next, place an entry in the [Files] script section telling Setup to copy the EXE to the install's temporary directory ("{tmp}"):</p>
 <p><tt>
 <b>[Files]</b><br />
-<font color="blue">Source</font>: "ModifyAutoexec.exe"; <font color="blue">DestDir</font>: "{tmp}"</tt></p>
+<font color="#0078D4">Source</font>: "ModifyAutoexec.exe"; <font color="#0078D4">DestDir</font>: "{tmp}"</tt></p>
 <p>Then add a [Run] section entry, telling Setup to execute the EXE after all other installation steps:</p>
 <p><tt>
 <b>[Run]</b><br />
-<font color="blue">Filename</font>: "{tmp}\ModifyAutoexec.exe"</tt></p>
+<font color="#0078D4">Filename</font>: "{tmp}\ModifyAutoexec.exe"</tt></p>
 <p>If the program needs additional information, such as the value of the "{app}" constant, you could pass it via a command line parameter, i.e.:</p>
 <p><tt>
 <b>[Run]</b><br />
-<font color="blue">Filename</font>: "{tmp}\ModifyAutoexec.exe"; <font color="blue">Parameters</font>: """{app}"""</tt></p>
+<font color="#0078D4">Filename</font>: "{tmp}\ModifyAutoexec.exe"; <font color="#0078D4">Parameters</font>: """{app}"""</tt></p>
 <p>You could alternatively incorporate the installation task into your application's main EXE and have it perform the task when called with a special command line parameter. For example:</p>
 <p><tt>
 <b>[Run]</b><br />
-<font color="blue">Filename</font>: "{app}\MyProgram.exe"; <font color="blue">Parameters</font>: "/DoTheTask"</tt></p>
+<font color="#0078D4">Filename</font>: "{app}\MyProgram.exe"; <font color="#0078D4">Parameters</font>: "/DoTheTask"</tt></p>
 </blockquote>
 
 <h4><a name="wildcard">Wildcard matches unexpected extensions.</a></h4>
@@ -287,13 +287,13 @@ cls
 <p>If the following wildcard is used in a [Files] section entry:</p>
 <p><tt>
 <b>[Files]</b><br />
-<font color="blue">Source</font>: "*.htm"; <font color="blue">DestDir</font>: "{app}"</tt></p>
+<font color="#0078D4">Source</font>: "*.htm"; <font color="#0078D4">DestDir</font>: "{app}"</tt></p>
 <p>you may find that it matches not only files with an .htm extension, but also files with an .html extension.</p>
 <p>This happens because in Windows, wildcards match both long filenames and 8.3 aliases ("short filenames"). By default, a file named "webpage.html" will have the 8.3 alias "WEBPAG~1.HTM"; hence, <tt>*.htm</tt> will match the file.</p>
 <p>To avoid this, add an <tt>Excludes</tt> parameter to explicitly filter out files with an .html extension:</p>
 <p><tt>
 <b>[Files]</b><br />
-<font color="blue">Source</font>: "*.htm"; <font color="blue">Excludes</font>: "*.html"; <font color="blue">DestDir</font>: "{app}"</tt></p>
+<font color="#0078D4">Source</font>: "*.htm"; <font color="#0078D4">Excludes</font>: "*.html"; <font color="#0078D4">DestDir</font>: "{app}"</tt></p>
 </blockquote>
 
 <h4><a name="filesemptydirs">Empty directories are not included when "recursesubdirs" flag is used on a [Files] entry.</a></h4>
@@ -322,10 +322,10 @@ URL=http://web.site.address/
 <p>Then add these lines to your script:</p>
 <p><tt>
 <b>[Files]</b><br />
-<font color="blue">Source</font>: "website.url"; <font color="blue">DestDir</font>: "{app}"<br />
+<font color="#0078D4">Source</font>: "website.url"; <font color="#0078D4">DestDir</font>: "{app}"<br />
 <br />
 <b>[Icons]</b><br />
-<font color="blue">Name</font>: "{group}\Visit My Web Site"; <font color="blue">Filename</font>: "{app}\website.url"<br />
+<font color="#0078D4">Name</font>: "{group}\Visit My Web Site"; <font color="#0078D4">Filename</font>: "{app}\website.url"<br />
 </tt></p>
 </blockquote>
 
@@ -340,7 +340,7 @@ URL=http://web.site.address/
 
 <p><tt>
 <b>[Registry]</b><br />
-<font color="blue">Root</font>: HKA; <font color="blue">Subkey</font>: "Software\Classes\.myp\OpenWithProgids"; <font color="blue">ValueType</font>: string; <font color="blue">ValueName</font>: "MyProgramFile.myp"; <font color="blue">ValueData</font>: ""; Flags: uninsdeletevalue
+<font color="#0078D4">Root</font>: HKA; <font color="#0078D4">Subkey</font>: "Software\Classes\.myp\OpenWithProgids"; <font color="#0078D4">ValueType</font>: string; <font color="#0078D4">ValueName</font>: "MyProgramFile.myp"; <font color="#0078D4">ValueData</font>: ""; Flags: uninsdeletevalue
 
 </tt></p>
 <blockquote>
@@ -348,28 +348,28 @@ URL=http://web.site.address/
 </blockquote>
 
 <p><tt>
-<font color="blue">Root</font>: HKA; <font color="blue">Subkey</font>: "Software\Classes\MyProgramFile.myp"; <font color="blue">ValueType</font>: string; <font color="blue">ValueName</font>: ""; <font color="blue">ValueData</font>: "My Program File"; <font color="blue">Flags</font>: uninsdeletekey
+<font color="#0078D4">Root</font>: HKA; <font color="#0078D4">Subkey</font>: "Software\Classes\MyProgramFile.myp"; <font color="#0078D4">ValueType</font>: string; <font color="#0078D4">ValueName</font>: ""; <font color="#0078D4">ValueData</font>: "My Program File"; <font color="#0078D4">Flags</font>: uninsdeletekey
 </tt></p>
 <blockquote>
 "My Program File" above is the name for the file type as shown in Explorer.
 </blockquote>
 
 <p><tt>
-<font color="blue">Root</font>: HKA; <font color="blue">Subkey</font>: "Software\Classes\MyProgramFile.myp\DefaultIcon"; <font color="blue">ValueType</font>: string; <font color="blue">ValueName</font>: ""; <font color="blue">ValueData</font>: "{app}\MyProg.exe,0"
+<font color="#0078D4">Root</font>: HKA; <font color="#0078D4">Subkey</font>: "Software\Classes\MyProgramFile.myp\DefaultIcon"; <font color="#0078D4">ValueType</font>: string; <font color="#0078D4">ValueName</font>: ""; <font color="#0078D4">ValueData</font>: "{app}\MyProg.exe,0"
 </tt></p>
 <blockquote>
 "DefaultIcon" is the registry key that specifies the filename containing the icon to associate with the file type. ",0" tells Explorer to use the first icon from MyProg.exe. (",1" would mean the second icon.)
 </blockquote>
 
 <p><tt>
-<font color="blue">Root</font>: HKA; <font color="blue">Subkey</font>: "Software\Classes\MyProgramFile.myp\shell\open\command"; <font color="blue">ValueType</font>: string; <font color="blue">ValueName</font>: ""; <font color="blue">ValueData</font>: """{app}\MyProg.exe"" ""%1"""
+<font color="#0078D4">Root</font>: HKA; <font color="#0078D4">Subkey</font>: "Software\Classes\MyProgramFile.myp\shell\open\command"; <font color="#0078D4">ValueType</font>: string; <font color="#0078D4">ValueName</font>: ""; <font color="#0078D4">ValueData</font>: """{app}\MyProg.exe"" ""%1"""
 </tt></p>
 <blockquote>
 "shell\open\command" is the registry key that specifies the program to execute when a file of the type is double-clicked in Explorer. The surrounding quotes are in the command line so it handles long filenames correctly.
 </blockquote>
 
 <p><tt>
-<font color="blue">Root</font>: HKA; <font color="blue">Subkey</font>: "Software\Classes\Applications\MyProg.exe\SupportedTypes"; <font color="blue">ValueType</font>: string; <font color="blue">ValueName</font>: ".myp"; <font color="blue">ValueData</font>: ""
+<font color="#0078D4">Root</font>: HKA; <font color="#0078D4">Subkey</font>: "Software\Classes\Applications\MyProg.exe\SupportedTypes"; <font color="#0078D4">ValueType</font>: string; <font color="#0078D4">ValueName</font>: ".myp"; <font color="#0078D4">ValueData</font>: ""
 </tt></p>
 
 <p>Also see the <a href="https://jrsoftware.org/ishelp/index.php?topic=admininstallmode">Non Administrative Install Mode topic</a> in the documentation for details on the HKA key value.</p>
@@ -392,7 +392,7 @@ URL=http://web.site.address/
 <h4><a name="backup">Making Backups Before Replacing Files</a></h4>
 <blockquote>
 <p>Inno Setup does not currently have a specific feature for doing that, but you can make a copy of a file before it is replaced by using a [Files] section entry similar to this:</p>
-<p><tt><font color="blue">Source</font>: "{app}\MyProg.exe"; <font color="blue">DestDir</font>: "{app}\backup"; <font color="blue">Flags</font>: external skipifsourcedoesntexist uninsneveruninstall</tt></p>
+<p><tt><font color="#0078D4">Source</font>: "{app}\MyProg.exe"; <font color="#0078D4">DestDir</font>: "{app}\backup"; <font color="#0078D4">Flags</font>: external skipifsourcedoesntexist uninsneveruninstall</tt></p>
 </blockquote>
 
 <h4><a name="difffiles">Installing Different Files Depending on Windows Version</a></h4>
@@ -413,12 +413,12 @@ URL=http://web.site.address/
 <li>Either create a shortcut in the Startup group:<br /><br />
 <tt>
 <b>[Icons]</b><br />
-<font color="blue">Name</font>: "{autostartup}\My Program"; <font color="blue">Filename</font>: "{app}\MyProg.exe"</tt>
+<font color="#0078D4">Name</font>: "{autostartup}\My Program"; <font color="#0078D4">Filename</font>: "{app}\MyProg.exe"</tt>
 </li>
 <li>Or create a value in the Run key of the registry:<br /><br />
 <tt>
 <b>[Registry]</b><br />
-<font color="blue">Root</font>: HKA; <font color="blue">Subkey</font>: "SOFTWARE\Microsoft\Windows\CurrentVersion\Run"; <font color="blue">ValueType</font>: string; <font color="blue">ValueName</font>: "MyProg"; <font color="blue">ValueData</font>: """{app}\MyProg.exe"""; <font color="blue">Flags</font>: uninsdeletevalue</tt>
+<font color="#0078D4">Root</font>: HKA; <font color="#0078D4">Subkey</font>: "SOFTWARE\Microsoft\Windows\CurrentVersion\Run"; <font color="#0078D4">ValueType</font>: string; <font color="#0078D4">ValueName</font>: "MyProg"; <font color="#0078D4">ValueData</font>: """{app}\MyProg.exe"""; <font color="#0078D4">Flags</font>: uninsdeletevalue</tt>
 </li>
 </ol>
 <p>See the <a href="https://jrsoftware.org/ishelp/index.php?topic=consts">Constants topic</a> in the documentation for more information on the {autostartup} constant.</p>
@@ -430,7 +430,7 @@ URL=http://web.site.address/
 <p>You may run a batch file by specifying the filename directly in the <tt>Filename</tt> parameter of a [Run] section entry:</p>
 <p><tt>
 <b>[Run]</b><br />
-<font color="blue">Filename</font>: "{app}\YourBatchFile.bat"</tt></p>
+<font color="#0078D4">Filename</font>: "{app}\YourBatchFile.bat"</tt></p>
 </blockquote>
 
 <h4><a name="mutexsessions">Detecting instances running in any user session with AppMutex</a></h4>
@@ -440,37 +440,37 @@ URL=http://web.site.address/
 <p>Mutexes with the <tt>Global\</tt> prefix are accessible from any user session. A like-named mutex must also be created in the session namespace (i.e. without the <tt>Global\</tt> prefix) in case the creation of the Global mutex failed due to security restrictions.</p>
 <p>Additionally, a special security descriptor must be passed in each of the CreateMutex() calls to ensure the mutex is accessible by different users.</p>
 <p>Here is an example of how to create the two mutexes in Delphi:</p>
-<p><tt><font color="blue">procedure</font> CreateMutexes(<font color="blue">const</font> MutexName: String);<br />
-<font color="green">{ Creates the two mutexes checked for by the installer/uninstaller to see if<br />
+<p><tt><font color="#0078D4">procedure</font> CreateMutexes(<font color="#0078D4">const</font> MutexName: String);<br />
+<font color="#339933">{ Creates the two mutexes checked for by the installer/uninstaller to see if<br />
 &nbsp;&nbsp;the program is still running. }</font><br />
-<font color="blue">const</font><br />
-&nbsp;&nbsp;SECURITY_DESCRIPTOR_REVISION = <font color="#ffa500">1</font>;<br />
-<font color="blue">var</font><br />
+<font color="#0078D4">const</font><br />
+&nbsp;&nbsp;SECURITY_DESCRIPTOR_REVISION = <font color="#E5885E">1</font>;<br />
+<font color="#0078D4">var</font><br />
 &nbsp;&nbsp;SecurityDesc: TSecurityDescriptor;<br />
 &nbsp;&nbsp;SecurityAttr: TSecurityAttributes;<br />
-<font color="blue">begin</font><br />
-&nbsp;&nbsp;<font color="green">{ By default created mutexes are accessible only by the user running<br />
+<font color="#0078D4">begin</font><br />
+&nbsp;&nbsp;<font color="#339933">{ By default created mutexes are accessible only by the user running<br />
 &nbsp;&nbsp;&nbsp;&nbsp;the process. We need our mutexes to be accessible to all users, so<br />
 &nbsp;&nbsp;&nbsp;&nbsp;that the mutex detection can work across user sessions. To do this<br />
 &nbsp;&nbsp;&nbsp;&nbsp;we use a security descriptor with a null DACL. }</font><br />
 &nbsp;&nbsp;InitializeSecurityDescriptor(@SecurityDesc, SECURITY_DESCRIPTOR_REVISION);<br />
-&nbsp;&nbsp;SetSecurityDescriptorDacl(@SecurityDesc, True, <font color="blue">nil</font>, False);<br />
+&nbsp;&nbsp;SetSecurityDescriptorDacl(@SecurityDesc, True, <font color="#0078D4">nil</font>, False);<br />
 &nbsp;&nbsp;SecurityAttr.nLength := SizeOf(SecurityAttr);<br />
 &nbsp;&nbsp;SecurityAttr.lpSecurityDescriptor := @SecurityDesc;<br />
 &nbsp;&nbsp;SecurityAttr.bInheritHandle := False;<br />
 &nbsp;&nbsp;CreateMutex(@SecurityAttr, False, PChar(MutexName));<br />
-&nbsp;&nbsp;CreateMutex(@SecurityAttr, False, PChar(<font color="#ffa500">'Global\'</font> + MutexName));<br />
-<font color="blue">end</font>;<br />
+&nbsp;&nbsp;CreateMutex(@SecurityAttr, False, PChar(<font color="#E5885E">'Global\'</font> + MutexName));<br />
+<font color="#0078D4">end</font>;<br />
 <br />
 ...<br />
 <br />
-<font color="blue">begin</font><br />
-&nbsp;&nbsp;CreateMutexes(<font color="#ffa500">'<b>YourMutexNameGoesHere</b>'</font>);<br />
-<font color="blue">end</font>;</tt></p>
+<font color="#0078D4">begin</font><br />
+&nbsp;&nbsp;CreateMutexes(<font color="#E5885E">'<b>YourMutexNameGoesHere</b>'</font>);<br />
+<font color="#0078D4">end</font>;</tt></p>
 <p>In your script, set <tt>AppMutex</tt> as follows:</p>
 <p><tt>
 <b>[Setup]</b><br />
-<font color="blue">AppMutex</font>=<b>YourMutexNameGoesHere</b>,Global\<b>YourMutexNameGoesHere</b></tt></p>
+<font color="#0078D4">AppMutex</font>=<b>YourMutexNameGoesHere</b>,Global\<b>YourMutexNameGoesHere</b></tt></p>
 </blockquote>
 
 <h4><a name="ocx">Installing OCX Files</a></h4>
@@ -478,7 +478,7 @@ URL=http://web.site.address/
 <p>The recommended way to install an OCX file is as follows.</p>
 <p><tt>
 <b>[Files]</b><br />
-<font color="blue">Source</font>: "ComCtl32.ocx";	<font color="blue">DestDir</font>: "{sys}";	<font color="blue">Flags</font>: restartreplace sharedfile regserver
+<font color="#0078D4">Source</font>: "ComCtl32.ocx";	<font color="#0078D4">DestDir</font>: "{sys}";	<font color="#0078D4">Flags</font>: restartreplace sharedfile regserver
 </tt></p>
 </blockquote>
 
