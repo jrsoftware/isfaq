@@ -15,6 +15,17 @@
 
   Please do NOT submit translations.
 -->
+
+<style>
+@keyframes qa-target-flash {
+  0%   { background-color: #f2cb1d80; }
+  100% { background-color: transparent; }
+}
+h4:target + blockquote {
+  animation: qa-target-flash 1.5s ease-out 1;
+  border-radius: 4px;
+}
+</style>
  
 <h3>Functionality</h3>
 <ul>
@@ -569,3 +580,17 @@ URL=http://web.site.address/
 <blockquote>
 <p>If your application needs to create installations on the fly, it is permissible to deploy the files for the Inno Setup compiler along with it, provided the terms of the Inno Setup <a href="https://jrsoftware.org/files/is/license.txt">license</a> are followed.</p>
 </blockquote>
+
+<script>
+// Add ids to <h4> from their inner <a name="..."> so :target can highlight sections
+(function() {
+  var anchors = document.querySelectorAll('h4 > a[name]');
+  anchors.forEach(function(a) {
+    var h4 = a.parentElement;
+    var name = a.getAttribute('name');
+    if (name && h4 && !h4.id) {
+      h4.id = name;
+    }
+  });
+})();
+</script>
