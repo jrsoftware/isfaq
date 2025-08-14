@@ -24,6 +24,7 @@
 <li><a href="#setupicon">How do I change the icon of Setup.exe?</a></li>
 <li><a href="#conditional">Can Inno Setup do a conditional installation - for example, proceed only if a certain registry key or file exists?</a></li>
 <li><a href="#download">Is there a download feature?</a></li>
+<li><a href="#archiveextraction">Is there an archive extraction feature?</a></li>
 <li><a href="#silent">Is it possible to do a silent install without using the /SILENT or /VERYSILENT command-line parameters?</a></li>
 <li><a href="#dirnamereg">Can Setup use the value of a registry entry as the default directory name?</a></li>
 <li><a href="#deluserkeys">Is it possible to delete keys inside every users' HKEY_CURRENT_USER registry hive?</a></li>
@@ -75,6 +76,7 @@
 
 <h3>Miscellaneous</h3>
 <ul>
+<li><a href="#deploylicense">How do I automatically deploy our commercial license key to a user?</a></li>
 <li><a href="#limits">Are there any limits on how many files, etc. may be included in an installation?</a></li>
 <li><a href="#cancel">What exactly happens when the user clicks Cancel during an installation?</a></li>
 <li><a href="#uninsttemp">What's this _iu14D2N.tmp file in my TEMP directory?</a></li>
@@ -121,7 +123,12 @@
 
 <h4><a name="download">Is there a download feature?</a></h4>
 <blockquote>
-<p>Yes, through the Pascal Scripting feature. See the <a href="https://jrsoftware.github.io/issrc/Examples/CodeDownloadFiles.iss">CodeDownloadFiles.iss</a> example script for an example.</p>
+<p>Yes, see the <a href="https://raw.githubusercontent.com/jrsoftware/issrc/refs/heads/main/Examples/DownloadFiles.iss">DownloadFiles.iss</a> example script for an example.</p>
+</blockquote>
+
+<h4><a name="archiveextraction">Is there an archive extraction feature?</a></h4>
+<blockquote>
+<p>Yes, see the <a href="https://raw.githubusercontent.com/jrsoftware/issrc/refs/heads/main/Examples/DownloadFiles.iss">DownloadFiles.iss</a> example script for an example.</p>
 </blockquote>
 
 <h4><a name="silent">Is it possible to do a silent install without using the /SILENT or /VERYSILENT command-line parameters?</a></h4>
@@ -516,6 +523,19 @@ URL=http://web.site.address/
 
 
 <h2>Miscellaneous</h2>
+
+<h4><a name="deploylicense">How do I automatically deploy our commercial license key to a user?</a></h4>
+<blockquote>
+<p>Your license key can be activated for a user by writing it as a single line to the following registry key:</p>
+<ul>
+<li>Key: <tt>HKEY_CURRENT_USER\Software\Jordan Russell\Inno Setup\License</tt></li>
+<li>Name: <tt>LicenseKey</tt></li>
+<li>Type: <tt>REG_SZ</tt></li>
+</ul>
+<p>You can do this before or after installation, or even while Inno Setup is running.</p>
+<p>A license key is a string of at least 108 characters. It always starts with 'in' and ends with 'no', without the quotes. To users the key is presented as multiple lines of 28 characters per line.</p>
+<p>Our rules for who counts as a user are explained on <a href="https://jrsoftware.org/isorder.php#howmanylicenses">our order page</a>.</p>
+</blockquote>
 
 <h4><a name="limits">Are there any limits on how many files, etc. may be included in an installation?</a></h4>
 <blockquote>
