@@ -129,7 +129,7 @@ h4:target + blockquote {
 
 <h4><a name="conditional">Can Inno Setup do a conditional installation - for example, proceed only if a certain registry key or file exists?</a></h4>
 <blockquote>
-<p>Yes, through the <a href="https://jrsoftware.org/ishelp/index.php?topic=scriptintro">Pascal Scripting feature</a>.</p>
+<p>Yes, through the <a href="https://jrsoftware.org/ishelp/?topic=scriptintro">Pascal Scripting feature</a>.</p>
 </blockquote>
 
 <h4><a name="download">Is there a download feature?</a></h4>
@@ -154,8 +154,8 @@ h4:target + blockquote {
 <b>[Setup]</b><br />
 <font color="#0078D4">DefaultDirName</font>={reg:HKA\Software\My Program,Path|{autopf}\My Program}<br />
 </tt></p>
-<p>See the <a href="https://jrsoftware.org/ishelp/index.php?topic=consts">Constants topic</a> in the documentation for more information on {reg:...} constants, and the {autopf} constant.</p>
-<p>Also see the <a href="https://jrsoftware.org/ishelp/index.php?topic=admininstallmode">Non Administrative Install Mode topic</a> in the documentation for details on the HKA key value.</p>
+<p>See the <a href="https://jrsoftware.org/ishelp/?topic=consts">Constants topic</a> in the documentation for more information on {reg:...} constants, and the {autopf} constant.</p>
+<p>Also see the <a href="https://jrsoftware.org/ishelp/?topic=admininstallmode">Non Administrative Install Mode topic</a> in the documentation for details on the HKA key value.</p>
 </blockquote>
 
 <h4><a name="deluserkeys">Is it possible to delete keys inside every users' HKEY_CURRENT_USER registry hive?</a></h4>
@@ -183,7 +183,7 @@ h4:target + blockquote {
 <li>Any new files installed by the update must be removed when the original application is uninstalled.</li>
 <li>The update should not create a new entry in the <i>Add/Remove Programs</i> list, or alter the original application's entry. Nor should the application name displayed by the uninstaller change.</li>
 </ol>
-<p>1 and 2 may be achieved by giving your update installation the same <tt>AppId</tt> setting as the original application. (If you never set <tt>AppId</tt> in the original application, then set <tt>AppId</tt> to the value of <tt>AppName</tt> used in the original application.) This, when combined with <tt>UsePreviousAppDir=yes</tt> (the default setting), will cause the update installation to default to the same directory as the original application, and share the same uninstall log file (unins???.dat). Also see the <a href="https://jrsoftware.org/ishelp/index.php?topic=sameappnotes">Same Application topic</a> in the documentation for details.</p>
+<p>1 and 2 may be achieved by giving your update installation the same <tt>AppId</tt> setting as the original application. (If you never set <tt>AppId</tt> in the original application, then set <tt>AppId</tt> to the value of <tt>AppName</tt> used in the original application.) This, when combined with <tt>UsePreviousAppDir=yes</tt> (the default setting), will cause the update installation to default to the same directory as the original application, and share the same uninstall log file (unins???.dat). Also see the <a href="https://jrsoftware.org/ishelp/?topic=sameappnotes">Same Application topic</a> in the documentation for details.</p>
 <p>3 may be achieved by setting <tt>CreateUninstallRegKey=no</tt> and <tt>UpdateUninstallLogAppName=no</tt>.</p>
 </blockquote>
 
@@ -252,7 +252,7 @@ cls
 
 <h4><a name="olddir">I've changed DefaultDirName in my script, yet when I run Setup it defaults to the directory I had before.</a></h4>
 <blockquote>
-<p>At startup Setup looks in the registry to see if the <a href="https://jrsoftware.org/ishelp/index.php?topic=sameappnotes">same application</a> was already installed previously, and if so, it will use the directory of the previous installation as the default directory presented to the user in the wizard. If you uninstall the application and run Setup again, it will use the new DefaultDirName setting. If you wish to disable this feature, set <a href="https://jrsoftware.org/ishelp/index.php?topic=setup_usepreviousappdir">UsePreviousAppDir</a> to "no".</p>
+<p>At startup Setup looks in the registry to see if the <a href="https://jrsoftware.org/ishelp/?topic=sameappnotes">same application</a> was already installed previously, and if so, it will use the directory of the previous installation as the default directory presented to the user in the wizard. If you uninstall the application and run Setup again, it will use the new DefaultDirName setting. If you wish to disable this feature, set <a href="https://jrsoftware.org/ishelp/?topic=setup_usepreviousappdir">UsePreviousAppDir</a> to "no".</p>
 </blockquote>
 
 <h4><a name="twoicons">I have two [Icons] entries with the same Name, but only one of them gets installed.</a></h4>
@@ -281,7 +281,7 @@ cls
 
 <h4><a name="custom">My installation needs to do something that Inno Setup apparently doesn't have a feature for.</a></h4>
 <blockquote>
-<p>Use the <a href="https://jrsoftware.org/ishelp/index.php?topic=scriptintro">Pascal Scripting feature</a> or the [Run] section:</p>
+<p>Use the <a href="https://jrsoftware.org/ishelp/?topic=scriptintro">Pascal Scripting feature</a> or the [Run] section:</p>
 <p>The [Run] section is an oft overlooked yet simple method of performing custom installation tasks. First, write a small program in the development tool of your choice (preferably one that creates stand-alone EXEs, such as Delphi) that performs the desired task, and copy its EXE to your script directory. Next, place an entry in the [Files] script section telling Setup to copy the EXE to the install's temporary directory ("{tmp}"):</p>
 <p><tt>
 <b>[Files]</b><br />
@@ -323,7 +323,7 @@ cls
 <h4><a name="filenotreplaced">Setup isn't replacing a particular file.</a></h4>
 <blockquote>
 <p>Compare the version numbers on the existing file and the new file by right-clicking them in Windows Explorer and selecting <i>Properties</i>. By default, Inno Setup will not replace an existing file unless the existing file has no version info or has a lower version number.</p>
-<p>The binary version numbers of files are what Inno Setup actually compares and the <a href="https://jrsoftware.org/ishelp/index.php?topic=setupcmdline&anchor=LOG">/LOG</a> switch can be handy here. The log will show the binary version numbers of files and why certain files were not replaced.</p>
+<p>The binary version numbers of files are what Inno Setup actually compares and the <a href="https://jrsoftware.org/ishelp/?topic=setupcmdline&anchor=LOG">/LOG</a> switch can be handy here. The log will show the binary version numbers of files and why certain files were not replaced.</p>
 <p>If you want to force a file to be replaced regardless of its version number, add the <tt>ignoreversion</tt> flag to the [Files] section entry. This flag should only be used on files private to your application, <b>never</b> on shared system files.</p>
 </blockquote>
 
@@ -390,7 +390,7 @@ URL=http://web.site.address/
 <font color="#0078D4">Root</font>: HKA; <font color="#0078D4">Subkey</font>: "Software\Classes\Applications\MyProg.exe\SupportedTypes"; <font color="#0078D4">ValueType</font>: string; <font color="#0078D4">ValueName</font>: ".myp"; <font color="#0078D4">ValueData</font>: ""
 </tt></p>
 
-<p>Also see the <a href="https://jrsoftware.org/ishelp/index.php?topic=admininstallmode">Non Administrative Install Mode topic</a> in the documentation for details on the HKA key value.</p>
+<p>Also see the <a href="https://jrsoftware.org/ishelp/?topic=admininstallmode">Non Administrative Install Mode topic</a> in the documentation for details on the HKA key value.</p>
 
 </blockquote>
 
@@ -415,7 +415,7 @@ URL=http://web.site.address/
 
 <h4><a name="difffiles">Installing Different Files Depending on Windows Version</a></h4>
 <blockquote>
-<p>This can be done via MinVersion and/or OnlyBelowVersion parameters on an entry. See the <a href="https://jrsoftware.org/ishelp/index.php?topic=commonparams">Common Parameters topic</a> in the documentation for details.</p>
+<p>This can be done via MinVersion and/or OnlyBelowVersion parameters on an entry. See the <a href="https://jrsoftware.org/ishelp/?topic=commonparams">Common Parameters topic</a> in the documentation for details.</p>
 </blockquote>
 
 <h4><a name="perms">Settings Permissions on Files, Directories, or Registry Keys</a></h4>
@@ -439,8 +439,8 @@ URL=http://web.site.address/
 <font color="#0078D4">Root</font>: HKA; <font color="#0078D4">Subkey</font>: "SOFTWARE\Microsoft\Windows\CurrentVersion\Run"; <font color="#0078D4">ValueType</font>: string; <font color="#0078D4">ValueName</font>: "MyProg"; <font color="#0078D4">ValueData</font>: """{app}\MyProg.exe"""; <font color="#0078D4">Flags</font>: uninsdeletevalue</tt>
 </li>
 </ol>
-<p>See the <a href="https://jrsoftware.org/ishelp/index.php?topic=consts">Constants topic</a> in the documentation for more information on the {autostartup} constant.</p>
-<p>Also see the <a href="https://jrsoftware.org/ishelp/index.php?topic=admininstallmode">Non Administrative Install Mode topic</a> in the documentation for details on the HKA key value.</p>
+<p>See the <a href="https://jrsoftware.org/ishelp/?topic=consts">Constants topic</a> in the documentation for more information on the {autostartup} constant.</p>
+<p>Also see the <a href="https://jrsoftware.org/ishelp/?topic=admininstallmode">Non Administrative Install Mode topic</a> in the documentation for details on the HKA key value.</p>
 </blockquote>
 
 <h4><a name="runbatchfile">Running batch files</a></h4>
@@ -528,7 +528,7 @@ URL=http://web.site.address/
 <li>The "{group}" constant always points to the current user's profile, as opposed to the All Users profile.</li>
 <li>The program may be uninstalled by any user. (When an administrator installs a program, only an administrator is allowed to uninstall it.)</li>
 </ul>
-<p>Also see the <a href="https://jrsoftware.org/ishelp/index.php?topic=admininstallmode">Non Administrative Install Mode topic</a> in the documentation for details.</p>
+<p>Also see the <a href="https://jrsoftware.org/ishelp/?topic=admininstallmode">Non Administrative Install Mode topic</a> in the documentation for details.</p>
 </blockquote>
 
 
