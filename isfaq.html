@@ -1,6 +1,6 @@
 <!--!
   Inno Setup
-  Copyright (C) 1997-2021 Jordan Russell
+  Copyright (C) 1997-2026 Jordan Russell
   Portions by Martijn Laan
   For conditions of distribution and use, see LICENSE.TXT.
   
@@ -10,21 +10,23 @@
   text and write them in such a way that the information will stay accurate for
   many years to come and requires as little maintenance as possible.
 
-  When adding a new topic, do not forget to update the list of contents at the
-  top of the FAQ as well.
+  The anchor of a section is the id of its <h2>, which the top of the FAQ page
+  links to. A new section needs a link there too.
+
+  Below its <h2>, each section has a button "Expand all" for its topics. A new
+  section needs one too.
+
+  Each topic is a <details> with its question as the <summary>. The anchor of a
+  topic is the id of the <div> with its answer, because a browser opens a
+  closed <details> for a link to an element in it.
+
+  Give the <tt> of a code example of one line the class "example". A code
+  example of several lines doesn't need it.
 
   Please do NOT submit translations.
 -->
 
 <style>
-@keyframes qa-target-flash {
-  0%   { background-color: #f2cb1d80; }
-  100% { background-color: transparent; }
-}
-h4:target + blockquote {
-  animation: qa-target-flash 1.5s ease-out 1;
-  border-radius: 4px;
-}
 .key {
   color: light-dark(#0078d4, #0088f0);
 }
@@ -35,82 +37,14 @@ h4:target + blockquote {
   color: light-dark(#c55420, #f09060);
 }
 </style>
- 
-<h3>Functionality</h3>
-<ul>
-<li><a href="#lang">Translating Inno Setup's Text</a></li>
-<li><a href="#mbcs">Does it support MBCS (multi-byte character sets)?</a></li>
-<li><a href="#msi">Will it support Windows Installer in the future?</a></li>
-<li><a href="#setupicon">How do I change the icon of Setup.exe?</a></li>
-<li><a href="#conditional">Can Inno Setup do a conditional installation - for example, proceed only if a certain registry key or file exists?</a></li>
-<li><a href="#download">Is there a download feature?</a></li>
-<li><a href="#archiveextraction">Is there an archive extraction feature?</a></li>
-<li><a href="#silent">Is it possible to do a silent install without using the /SILENT or /VERYSILENT command-line parameters?</a></li>
-<li><a href="#dirnamereg">Can Setup use the value of a registry entry as the default directory name?</a></li>
-<li><a href="#deluserkeys">Is it possible to delete keys inside every users' HKEY_CURRENT_USER registry hive?</a></li>
-<li><a href="#filestodeploy">What system files must I deploy with my application?</a></li>
-<li><a href="#updateinstall">How to create an installation that is an "update" or "add-on" to an existing installation?</a></li>
-</ul>
 
-<h3>Problems</h3>
-<ul>
-<li><a href="#errorquotes">Compiler says "Mismatched or misplaced quotes on parameter"</a></li>
-<li><a href="#workingdir">My application can't find any of its files when it is started from the shortcut created by Setup. It works fine when I double-click the application's EXE in Explorer.</a></li>
-<li><a href="#appid">When I install a new version of my application without uninstalling the old version first, I get a second entry in Control Panel's <i>Add/Remove Programs</i>.</a></li>
-<li><a href="#corrupt">Why is the error message "The setup files are corrupted" displayed on some systems?</a></li>
-<li><a href="#noregserver">Setup gives the message "Unable to register the DLL/OCX: DllRegisterServer export not found"</a></li>
-<li><a href="#emptydirs">After uninstalling, the directories created during installation still exist.</a></li>
-<li><a href="#batchfile">I run a batch file in the [Run] section, but the window remains on the screen after it finishes executing. I'd like it to "close on exit."</a></li>
-<li><a href="#olddir">I've changed DefaultDirName in my script, yet when I run Setup it defaults to the directory I had before.</a></li>
-<li><a href="#twoicons">I have two [Icons] entries with the same Name, but only one of them gets installed.</a></li>
-<li><a href="#runwait">Setup isn't waiting for programs executed by [Run] entries to finish.</a></li>
-<li><a href="#missinglanguages">Some languages are missing on the <i>Select Setup Language</i> dialog, or it doesn't show up at all.</a></li>
-<li><a href="#missingmappeddrives">Mapped drives aren't showing up on the <i>Select Destination Location, or cannot be browsed into.</i> wizard page.</a></li>
-<li><a href="#custom">My installation needs to do something that Inno Setup apparently doesn't have a feature for.</a></li>
-<li><a href="#wildcard">Wildcard matches unexpected extensions.</a></li>
-<li><a href="#filesemptydirs">Empty directories are not included when "recursesubdirs" flag is used on a [Files] entry.</a></li>
-<li><a href="#filenotreplaced">Setup isn't replacing a particular file.</a></li>
-</ul>
+<h2 id="functionality">Functionality</h2>
 
-<h3>Installation Tasks</h3>
-<ul>
-<li><a href="#urls">Creating Internet (URL) Shortcuts</a></li>
-<li><a href="#startin">Setting the "Start In" Field on a Shortcut</a></li>
-<li><a href="#assoc">Creating File Associations</a></li>
-<li><a href="#env">Setting Environment Variables</a></li>
-<li><a href="#closeonexit">Setting the "Close on Exit" Box on a Shortcut to an MS-DOS Program</a></li>
-<li><a href="#backup">Making Backups Before Replacing Files</a></li>
-<li><a href="#difffiles">Installing Different Files Depending on Windows Version</a></li>
-<li><a href="#perms">Settings Permissions on Files, Directories, or Registry Keys</a></li>
-<li><a href="#startup">Starting a program when Windows starts</a></li>
-<li><a href="#runbatchfile">Running batch files</a></li>
-<li><a href="#mutexsessions">Detecting instances running in any user session with AppMutex</a></li>
-<li><a href="#ocx">Installing OCX Files</a></li>
-</ul>
+<p class="expand-all" hidden><button type="button" class="button compact">Expand all</button></p>
 
-<h3>Compatibility</h3>
-<ul>
-<li><a href="#oscompat">OS Compatibility</a></li>
-<li><a href="#ntsecur">Administrative Privileges</a></li>
-</ul>
-
-<h3>Miscellaneous</h3>
-<ul>
-<li><a href="#deploylicense">How do I automatically deploy our commercial license key to a user?</a></li>
-<li><a href="#limits">Are there any limits on how many files, etc. may be included in an installation?</a></li>
-<li><a href="#cancel">What exactly happens when the user clicks Cancel during an installation?</a></li>
-<li><a href="#uninsttemp">What's this _iu14D2N.tmp file in my TEMP directory?</a></li>
-<li><a href="#regreplace">Why does Setup register files when they aren't replaced?</a></li>
-<li><a href="#uninstallername">Why has the uninstaller EXE numbers in its name?</a></li>
-<li><a href="#redistribute">Am I allowed to redistribute the Inno Setup compiler with my application?</a></li>
-</ul>
-
-
-
-<h2>Functionality</h2>
-
-<h4><a name="lang">Translating Inno Setup's Text</a></h4>
-<blockquote>
+<details>
+<summary>Translating Inno Setup's Text</summary>
+<div id="lang">
 <p>Translating Inno Setup's text into another language does not require modifying the source code. Simply make a copy of the Default.isl file (included with Inno Setup) and start editing the text in it. (Do not directly edit the Default.isl file, otherwise your changes will be lost when you install a new Inno Setup version.) See the "[Messages] Section" topic in the documentation for some important tips.</p>
 <p>Once you have finished creating the new .isl file, create a [Languages] section to tell the compiler to use it:</p>
 <p><tt>
@@ -119,45 +53,61 @@ h4:target + blockquote {
 </tt></p>
 <p>There are many contributed translations available for download on the <a href="https://jrsoftware.org/inno-setup/translations">Inno Setup Translations</a> page.</p>
 <p>Note that the captions of buttons in message boxes can't be translated. These captions are always in the same language as Windows itself. So if the user is running an English edition of Windows, they will see English button captions. This is normal behavior for any application that displays message boxes using the Windows MessageBox() function.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="mbcs">Does it support MBCS (multi-byte character sets)?</a></h4>
-<blockquote>
+<details>
+<summary>Does it support MBCS (multi-byte character sets)?</summary>
+<div id="mbcs">
 <p>Yes. It does lead byte checking on all filename and constant parsing, so it does not mistake trail bytes for backslashes ("\") or braces ("{").</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="msi">Will it support Windows Installer in the future?</a></h4>
-<blockquote>
+<details>
+<summary>Will it support Windows Installer in the future?</summary>
+<div id="msi">
 <p>At the present time, there are no plans for a Windows Installer edition of Inno Setup. "Supporting" Windows Installer would likely involve a near-complete rewrite of the program.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="setupicon">How do I change the icon of Setup.exe?</a></h4>
-<blockquote>
+<details>
+<summary>How do I change the icon of Setup.exe?</summary>
+<div id="setupicon">
 <p>The installer's icon may be changed by setting the <tt>SetupIconFile</tt> [Setup] section directive. To set the uninstaller's icon, set <tt>UninstallDisplayIcon</tt>.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="conditional">Can Inno Setup do a conditional installation - for example, proceed only if a certain registry key or file exists?</a></h4>
-<blockquote>
+<details>
+<summary>Can Inno Setup do a conditional installation - for example, proceed only if a certain registry key or file exists?</summary>
+<div id="conditional">
 <p>Yes, through the <a href="https://jrsoftware.org/inno-setup/documentation/?topic=scriptintro">Pascal Scripting feature</a>.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="download">Is there a download feature?</a></h4>
-<blockquote>
+<details>
+<summary>Is there a download feature?</summary>
+<div id="download">
 <p>Yes, see the <a href="https://raw.githubusercontent.com/jrsoftware/issrc/refs/heads/main/Examples/DownloadFiles.iss">DownloadFiles.iss</a> example script for an example.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="archiveextraction">Is there an archive extraction feature?</a></h4>
-<blockquote>
+<details>
+<summary>Is there an archive extraction feature?</summary>
+<div id="archiveextraction">
 <p>Yes, see the <a href="https://raw.githubusercontent.com/jrsoftware/issrc/refs/heads/main/Examples/DownloadFiles.iss">DownloadFiles.iss</a> example script for an example.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="silent">Is it possible to do a silent install without using the /SILENT or /VERYSILENT command-line parameters?</a></h4>
-<blockquote>
+<details>
+<summary>Is it possible to do a silent install without using the /SILENT or /VERYSILENT command-line parameters?</summary>
+<div id="silent">
 <p>No, nor is such a feature planned (it would be abused). If it is your intention to keep user interaction to a minimum, use the Disable* [Setup] section directives.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="dirnamereg">Can Setup use the value of a registry entry as the default directory name?</a></h4>
-<blockquote>
+<details>
+<summary>Can Setup use the value of a registry entry as the default directory name?</summary>
+<div id="dirnamereg">
 <p>Yes. Use a {reg:...} constant in DefaultDirName. For example:</p>
 <p><tt>
 <b>[Setup]</b><br />
@@ -165,27 +115,33 @@ h4:target + blockquote {
 </tt></p>
 <p>See the <a href="https://jrsoftware.org/inno-setup/documentation/?topic=consts">Constants topic</a> in the documentation for more information on {reg:...} constants, and the {autopf} constant.</p>
 <p>Also see the <a href="https://jrsoftware.org/inno-setup/documentation/?topic=admininstallmode">Non Administrative Install Mode topic</a> in the documentation for details on the HKA key value.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="deluserkeys">Is it possible to delete keys inside every users' HKEY_CURRENT_USER registry hive?</a></h4>
-<blockquote>
+<details>
+<summary>Is it possible to delete keys inside every users' HKEY_CURRENT_USER registry hive?</summary>
+<div id="deluserkeys">
 <p>No. There is no foolproof method of accessing registry keys belonging to other users.</p>
 <p>In order to access a given user's registry hive the user's profile must first be loaded, and in order to do that, authentication is necessary. An uninstaller would not know the user's password.</p>
 <p>"But couldn't it call RegLoadKey to manually mount the user's registry hive (NTUSER.DAT)?" Without impersonating the user, the user running the uninstaller would need write permission on the user's profile directory. On Windows XP, user profiles can be marked "private", where no one but the user himself can access the files inside it.</p>
 <p>And in a roaming profile setup, it's impossible to even know the path in which a given user's profile resides without authenticating first.</p>
 <p>To deal with this situation do what other installers do: simply leave the HKCU keys of other users in place.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="filestodeploy">What system files must I deploy with my application?</a></h4>
-<blockquote>
+<details>
+<summary>What system files must I deploy with my application?</summary>
+<div id="filestodeploy">
 <p>This is primarily dependent on which development tool your application was created with. Check its documentation.</p>
-<p>If you determine that your application depends on a particular Microsoft DLL that doesn't come preinstalled with Windows then first of all, <b>do <u>not</u> deploy DLLs out of your own Windows directory</b>. Files in your own Windows directory are often tailored for your specific version of Windows, and will not work on other versions of Windows -- or worse (see <a href="#not">below</a>). This is especially true when you're running the very latest version of Windows.</p>
+<p>If you determine that your application depends on a particular Microsoft DLL that doesn't come preinstalled with Windows then first of all, <b>do <u>not</u> deploy DLLs out of your own Windows directory</b>. Files in your own Windows directory are often tailored for your specific version of Windows, and will not work on other versions of Windows -- or worse. This is especially true when you're running the very latest version of Windows.</p>
 <p>Instead, search for versions of the DLL on Microsoft's web site that are deemed "redistributable". (<a href="http://www.microsoft.com/downloads/">http://www.microsoft.com/downloads/</a> is a good place to start.) Such versions are normally safe to install on any Windows version (but check the README files to be sure).</p>
 <p>If nothing turns up, then probably you aren't allowed to individually deploy the DLL in question.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="updateinstall">How to create an installation that is an "update" or "add-on" to an existing installation?</a></h4>
-<blockquote>
+<details>
+<summary>How to create an installation that is an "update" or "add-on" to an existing installation?</summary>
+<div id="updateinstall">
 <p>When deploying an installation that is an "update" (or "add-on") to an existing installation, you probably want the following criteria to be met:</p>
 <ol>
 <li>The update must be installed to the same directory as the original application.</li>
@@ -194,54 +150,70 @@ h4:target + blockquote {
 </ol>
 <p>1 and 2 may be achieved by giving your update installation the same <tt>AppId</tt> setting as the original application. (If you never set <tt>AppId</tt> in the original application, then set <tt>AppId</tt> to the value of <tt>AppName</tt> used in the original application.) This, when combined with <tt>UsePreviousAppDir=yes</tt> (the default setting), will cause the update installation to default to the same directory as the original application, and share the same uninstall log file (unins???.dat). Also see the <a href="https://jrsoftware.org/inno-setup/documentation/?topic=sameappnotes">Same Application topic</a> in the documentation for details.</p>
 <p>3 may be achieved by setting <tt>CreateUninstallRegKey=no</tt> and <tt>UpdateUninstallLogAppName=no</tt>.</p>
-</blockquote>
+</div>
+</details>
 
 
 
-<h2>Problems</h2>
+<h2 id="problems">Problems</h2>
 
-<h4><a name="errorquotes">Compiler says "Mismatched or misplaced quotes on parameter"</a></h4>
-<blockquote>
+<p class="expand-all" hidden><button type="button" class="button compact">Expand all</button></p>
+
+<details>
+<summary>Compiler says "Mismatched or misplaced quotes on parameter"</summary>
+<div id="errorquotes">
 <p>This message is typically displayed if you try to embed a quote (") character in a parameter's data, but do not double it as required. Read the "Parameters in Sections" topic in the documentation for more information.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="workingdir">My application can't find any of its files when it is started from the shortcut created by Setup. It works fine when I double-click the application's EXE in Explorer.</a></h4>
-<blockquote>
+<details>
+<summary>My application can't find any of its files when it is started from the shortcut created by Setup. It works fine when I double-click the application's EXE in Explorer.</summary>
+<div id="workingdir">
 <p>Your application is most likely not specifying pathnames on the files it is trying to open, so it is expecting to find them in the current directory. Inno Setup by default does not set the "Start In" field on shortcuts its creates; this causes Windows to pick a directory itself, which usually won't be the directory containing your application.</p>
 <p>In virtually all cases, this is something that should be corrected at the application level. Properly designed GUI applications should not expect to be started from a particular directory; they should always specify full pathnames on files they open. In Delphi or C++Builder, for example, it's possible to get the full pathname of the directory containing the application EXE by calling: <tt>ExtractFilePath(ParamStr(0))</tt>. To get the full path of a file named "File.txt" in the application directory, use: <tt>ExtractFilePath(ParamStr(0)) + 'File.txt'</tt>.</p>
 <p>If for some reason you cannot fix this at the application level, you can tell Inno Setup to set the "Start In" field by adding "WorkingDir: {app}" to your [Icons] entries.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="corrupt">Why is the error message "The setup files are corrupted" displayed on some systems?</a></h4>
-<blockquote>
+<details>
+<summary>Why is the error message "The setup files are corrupted" displayed on some systems?</summary>
+<div id="corrupt">
 <p>This error message is displayed when a file pertaining to the installation (e.g., setup.exe, setup.1) has the wrong size, or part of a file fails a CRC check. It is not displayed for any other reason.</p>
 <p>If your installation is distributed over the internet and you're getting a lot of reports of this error, it could be that your web server is delivering partial files by dropping connections prematurely. Have the affected users check the size in the bytes of the file(s) they downloaded.</p>
 <p>If your installation is distributed via CD-ROM or floppy disk, it could be that the CD-ROM or floppy disk is bad, or possibly the drive is defective.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="appid">When I install a new version of my application without uninstalling the old version first, I get a second entry in Control Panel's <i>Add/Remove Programs</i>.</a></h4>
-<blockquote>
+<details>
+<summary>When I install a new version of my application without uninstalling the old version first, I get a second entry in Control Panel's <i>Add/Remove Programs</i>.</summary>
+<div id="appid">
 <p>This happens when you change AppId between versions, or if AppId is not specified, AppName. If you do that, Setup has no way of knowing that the two versions are of the same application, and thus will create a new entry in <i>Add/Remove Programs</i>. Additionally, a new uninstall log file (unins???.dat) will be created. The obvious solution for this is to not change AppId or AppName.</p>
 <p>If you must change AppName in a new version, set AppId to the value of AppId or AppName from the previous version.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="noregserver">Setup gives the message "Unable to register the DLL/OCX: DllRegisterServer export not found"</a></h4>
-<blockquote>
+<details>
+<summary>Setup gives the message "Unable to register the DLL/OCX: DllRegisterServer export not found"</summary>
+<div id="noregserver">
 <p>This message normally means that you specified the "regserver" flag on a file that doesn't possess the ability to be registered. Remove the "regserver" flag from the [Files] entry and the message will go away.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="emptydirs">After uninstalling, the directories created during installation still exist.</a></h4>
-<blockquote>
+<details>
+<summary>After uninstalling, the directories created during installation still exist.</summary>
+<div id="emptydirs">
 <p>There are several reasons why a directory may not be removed:</p>
-<ul>
+<ul class="block-bullets">
 <li>It already existed prior to installation. By default, the uninstaller plays it safe and doesn't remove directories that the installer didn't create.</li>
 <li>It contains files or subdirectories. Use [UninstallDelete] if you need the uninstaller to delete additional files/directories.</li>
 <li>A running process has the directory as its current directory.</li>
 </ul>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="batchfile">I run a batch file in the [Run] section, but the window remains on the screen after it finishes executing. I'd like it to "close on exit."</a></h4>
-<blockquote>
+<details>
+<summary>I run a batch file in the [Run] section, but the window remains on the screen after it finishes executing. I'd like it to "close on exit."</summary>
+<div id="batchfile">
 <p>From Tim Rude:<br />
 The simplest way to get a batch file to automatically close on exit is to clear the screen at the end of it using the CLS command.</p>
 <p><i>--- batch file 1 ---</i></p>
@@ -257,39 +229,51 @@ echo Hello World<br />
 echo This batch file DOES close on exit<br />
 cls
 </tt></p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="olddir">I've changed DefaultDirName in my script, yet when I run Setup it defaults to the directory I had before.</a></h4>
-<blockquote>
+<details>
+<summary>I've changed DefaultDirName in my script, yet when I run Setup it defaults to the directory I had before.</summary>
+<div id="olddir">
 <p>At startup Setup looks in the registry to see if the <a href="https://jrsoftware.org/inno-setup/documentation/?topic=sameappnotes">same application</a> was already installed previously, and if so, it will use the directory of the previous installation as the default directory presented to the user in the wizard. If you uninstall the application and run Setup again, it will use the new DefaultDirName setting. If you wish to disable this feature, set <a href="https://jrsoftware.org/inno-setup/documentation/?topic=setup_usepreviousappdir">UsePreviousAppDir</a> to "no".</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="twoicons">I have two [Icons] entries with the same Name, but only one of them gets installed.</a></h4>
-<blockquote>
+<details>
+<summary>I have two [Icons] entries with the same Name, but only one of them gets installed.</summary>
+<div id="twoicons">
 <p>Two files can't have the same name, and since shortcuts are files, two shortcuts therefore can't have the same name.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="runwait">Setup isn't waiting for a program executed by a [Run] entry to finish.</a></h4>
-<blockquote>
+<details>
+<summary>Setup isn't waiting for a program executed by a [Run] entry to finish.</summary>
+<div id="runwait">
 <p>First, make sure that you are <i>not</i> using the "nowait" or "waituntilidle" flags on the [Run] entry. These flags prevent Setup from waiting until the process completely terminates.</p>
 <p>If you aren't using those flags and it still doesn't seem to be waiting for the program to finish, then likely what is happening is that the EXE you're running is spawning some other process and then terminating itself immediately, causing Setup to think the program has finished. This is known to happen with older InstallShield-based installers (to work around it, try using the <a href="http://www.installshield.com/news/newsletter/0206-articles/LaunchIS5Setup.asp">/SMS switch</a>).</p>
 <p>A simple way to check if a program does that is to run "START /WAIT ProgramName.exe" from the command line, and see if you are returned to the command prompt before the program exits.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="missinglanguages">Some languages are missing on the <i>Select Setup Language</i> dialog, or it doesn't show up at all even though I've added multiple languages.</a></h4>
-<blockquote>
+<details>
+<summary>Some languages are missing on the <i>Select Setup Language</i> dialog, or it doesn't show up at all even though I've added multiple languages.</summary>
+<div id="missinglanguages">
 <p>You are using an old Non Unicode version of Inno Setup.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="missingmappeddrives">Mapped drives aren't showing up on the <i>Select Destination Location</i> wizard page, or cannot be browsed into.</a></h4>
-<blockquote>
-<p>Your installation requires administrative privileges and is running elevated:</li>
+<details>
+<summary>Mapped drives aren't showing up on the <i>Select Destination Location</i> wizard page, or cannot be browsed into.</summary>
+<div id="missingmappeddrives">
+<p>Your installation requires administrative privileges and is running elevated:</p>
 <p>Mapped drives are not available (by default) to any elevated application. This was introduced in Windows Vista.</p>
 <p>There is an <a href="https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/ee844140(v=ws.10)">option</a> to make them available for same user elevation, but this won't help the situation when run from a LUA where the user changes.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="custom">My installation needs to do something that Inno Setup apparently doesn't have a feature for.</a></h4>
-<blockquote>
+<details>
+<summary>My installation needs to do something that Inno Setup apparently doesn't have a feature for.</summary>
+<div id="custom">
 <p>Use the <a href="https://jrsoftware.org/inno-setup/documentation/?topic=scriptintro">Pascal Scripting feature</a> or the [Run] section:</p>
 <p>The [Run] section is an oft overlooked yet simple method of performing custom installation tasks. First, write a small program in the development tool of your choice (preferably one that creates stand-alone EXEs, such as Delphi) that performs the desired task, and copy its EXE to your script directory. Next, place an entry in the [Files] script section telling Setup to copy the EXE to the install's temporary directory ("{tmp}"):</p>
 <p><tt>
@@ -307,10 +291,12 @@ cls
 <p><tt>
 <b>[Run]</b><br />
 <span class="key">Filename</span>: "{app}\MyProgram.exe"; <span class="key">Parameters</span>: "/DoTheTask"</tt></p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="wildcard">Wildcard matches unexpected extensions.</a></h4>
-<blockquote>
+<details>
+<summary>Wildcard matches unexpected extensions.</summary>
+<div id="wildcard">
 <p>If the following wildcard is used in a [Files] section entry:</p>
 <p><tt>
 <b>[Files]</b><br />
@@ -321,27 +307,35 @@ cls
 <p><tt>
 <b>[Files]</b><br />
 <span class="key">Source</span>: "*.htm"; <span class="key">Excludes</span>: "*.html"; <span class="key">DestDir</span>: "{app}"</tt></p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="filesemptydirs">Empty directories are not included when "recursesubdirs" flag is used on a [Files] entry.</a></h4>
-<blockquote>
+<details>
+<summary>Empty directories are not included when "recursesubdirs" flag is used on a [Files] entry.</summary>
+<div id="filesemptydirs">
 <p>Add the <tt>createallsubdirs</tt> flag to your [Files] section entry, and the empty directories will be created at install time.</p>
 <p>The [Dirs] section may also be used to create empty directories.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="filenotreplaced">Setup isn't replacing a particular file.</a></h4>
-<blockquote>
+<details>
+<summary>Setup isn't replacing a particular file.</summary>
+<div id="filenotreplaced">
 <p>Compare the version numbers on the existing file and the new file by right-clicking them in Windows Explorer and selecting <i>Properties</i>. By default, Inno Setup will not replace an existing file unless the existing file has no version info or has a lower version number.</p>
 <p>The binary version numbers of files are what Inno Setup actually compares and the <a href="https://jrsoftware.org/inno-setup/documentation/?topic=setupcmdline&anchor=LOG">/LOG</a> switch can be handy here. The log will show the binary version numbers of files and why certain files were not replaced.</p>
 <p>If you want to force a file to be replaced regardless of its version number, add the <tt>ignoreversion</tt> flag to the [Files] section entry. This flag should only be used on files private to your application, <b>never</b> on shared system files.</p>
-</blockquote>
+</div>
+</details>
 
 
 
-<h2>Installation Tasks</h2>
+<h2 id="installationtasks">Installation Tasks</h2>
 
-<h4><a name="urls">Creating Internet (URL) Shortcuts</a></h4>
-<blockquote>
+<p class="expand-all" hidden><button type="button" class="button compact">Expand all</button></p>
+
+<details>
+<summary>Creating Internet (URL) Shortcuts</summary>
+<div id="urls">
 <p>First create a file named, for example, "website.url", and place these lines inside it:</p>
 <p><tt>[InternetShortcut]<br />
 URL=http://web.site.address/
@@ -354,15 +348,19 @@ URL=http://web.site.address/
 <b>[Icons]</b><br />
 <span class="key">Name</span>: "{group}\Visit My Web Site"; <span class="key">Filename</span>: "{app}\website.url"<br />
 </tt></p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="startin">Setting the "Start In" Field on a Shortcut</a></h4>
-<blockquote>
+<details>
+<summary>Setting the "Start In" Field on a Shortcut</summary>
+<div id="startin">
 <p>Use a WorkingDir parameter on the [Icons] section entry.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="assoc">Creating File Associations</a></h4>
-<blockquote>
+<details>
+<summary>Creating File Associations</summary>
+<div id="assoc">
 <p>First set the [Setup] section directive "ChangesAssociations" to "yes". Then create 5 [Registry] entries as shown below to create a file association.</p>
 
 <p><tt>
@@ -374,67 +372,79 @@ URL=http://web.site.address/
 ".myp" is the extension we're associating. "MyProgramFile.myp" is the internal name for the file type as stored in the registry. Make sure you use a unique name for this so you don't inadvertently overwrite another application's registry key.
 </blockquote>
 
-<p><tt>
+<p><tt class="example">
 <span class="key">Root</span>: HKA; <span class="key">Subkey</span>: "Software\Classes\MyProgramFile.myp"; <span class="key">ValueType</span>: string; <span class="key">ValueName</span>: ""; <span class="key">ValueData</span>: "My Program File"; <span class="key">Flags</span>: uninsdeletekey
 </tt></p>
 <blockquote>
 "My Program File" above is the name for the file type as shown in Explorer.
 </blockquote>
 
-<p><tt>
+<p><tt class="example">
 <span class="key">Root</span>: HKA; <span class="key">Subkey</span>: "Software\Classes\MyProgramFile.myp\DefaultIcon"; <span class="key">ValueType</span>: string; <span class="key">ValueName</span>: ""; <span class="key">ValueData</span>: "{app}\MyProg.exe,0"
 </tt></p>
 <blockquote>
 "DefaultIcon" is the registry key that specifies the filename containing the icon to associate with the file type. ",0" tells Explorer to use the first icon from MyProg.exe. (",1" would mean the second icon.)
 </blockquote>
 
-<p><tt>
+<p><tt class="example">
 <span class="key">Root</span>: HKA; <span class="key">Subkey</span>: "Software\Classes\MyProgramFile.myp\shell\open\command"; <span class="key">ValueType</span>: string; <span class="key">ValueName</span>: ""; <span class="key">ValueData</span>: """{app}\MyProg.exe"" ""%1"""
 </tt></p>
 <blockquote>
 "shell\open\command" is the registry key that specifies the program to execute when a file of the type is double-clicked in Explorer. The surrounding quotes are in the command line so it handles long filenames correctly.
 </blockquote>
 
-<p><tt>
+<p><tt class="example">
 <span class="key">Root</span>: HKA; <span class="key">Subkey</span>: "Software\Classes\Applications\MyProg.exe\SupportedTypes"; <span class="key">ValueType</span>: string; <span class="key">ValueName</span>: ".myp"; <span class="key">ValueData</span>: ""
 </tt></p>
 
 <p>Also see the <a href="https://jrsoftware.org/inno-setup/documentation/?topic=admininstallmode">Non Administrative Install Mode topic</a> in the documentation for details on the HKA key value.</p>
 
-</blockquote>
+</div>
+</details>
 
-<h4><a name="env">Setting Environment Variables</a></h4>
-<blockquote>
+<details>
+<summary>Setting Environment Variables</summary>
+<div id="env">
 <p>Environment variables are stored as string values in the registry, so it is possible to manipulate them using the [Registry] section. System-wide environment variables are located at:</p>
 <blockquote>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment</blockquote>
 <p>User-specific environment variables are located at:</p>
 <blockquote>HKEY_CURRENT_USER\Environment</blockquote>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="closeonexit">Setting the "Close on Exit" Box on a Shortcut to an MS-DOS Program</a></h4>
-<blockquote>
+<details>
+<summary>Setting the "Close on Exit" Box on a Shortcut to an MS-DOS Program</summary>
+<div id="closeonexit">
 <p>Use the "closeonexit" and "dontcloseonexit" flags in the [Icons] section.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="backup">Making Backups Before Replacing Files</a></h4>
-<blockquote>
+<details>
+<summary>Making Backups Before Replacing Files</summary>
+<div id="backup">
 <p>Inno Setup does not currently have a specific feature for doing that, but you can make a copy of a file before it is replaced by using a [Files] section entry similar to this:</p>
-<p><tt><span class="key">Source</span>: "{app}\MyProg.exe"; <span class="key">DestDir</span>: "{app}\backup"; <span class="key">Flags</span>: external skipifsourcedoesntexist uninsneveruninstall</tt></p>
-</blockquote>
+<p><tt class="example"><span class="key">Source</span>: "{app}\MyProg.exe"; <span class="key">DestDir</span>: "{app}\backup"; <span class="key">Flags</span>: external skipifsourcedoesntexist uninsneveruninstall</tt></p>
+</div>
+</details>
 
-<h4><a name="difffiles">Installing Different Files Depending on Windows Version</a></h4>
-<blockquote>
+<details>
+<summary>Installing Different Files Depending on Windows Version</summary>
+<div id="difffiles">
 <p>This can be done via MinVersion and/or OnlyBelowVersion parameters on an entry. See the <a href="https://jrsoftware.org/inno-setup/documentation/?topic=commonparams">Common Parameters topic</a> in the documentation for details.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="perms">Settings Permissions on Files, Directories, or Registry Keys</a></h4>
-<blockquote>
+<details>
+<summary>Settings Permissions on Files, Directories, or Registry Keys</summary>
+<div id="perms">
 <p>The [Dirs], [Files], and [Registry] sections support Permissions parameters for setting permissions on directories, files, and registry keys respectively.</p>
 <p>If you have more advanced needs, take a look at <a href="https://helgeklein.com/setacl/">SetACL</a>.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="startup">Starting a program when Windows starts</a></h4>
-<blockquote>
+<details>
+<summary>Starting a program when Windows starts</summary>
+<div id="startup">
 <p>There are two different ways to accomplish this:</p>
 <ol>
 <li>Either create a shortcut in the Startup group:<br /><br />
@@ -450,18 +460,22 @@ URL=http://web.site.address/
 </ol>
 <p>See the <a href="https://jrsoftware.org/inno-setup/documentation/?topic=consts">Constants topic</a> in the documentation for more information on the {autostartup} constant.</p>
 <p>Also see the <a href="https://jrsoftware.org/inno-setup/documentation/?topic=admininstallmode">Non Administrative Install Mode topic</a> in the documentation for details on the HKA key value.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="runbatchfile">Running batch files</a></h4>
-<blockquote>
+<details>
+<summary>Running batch files</summary>
+<div id="runbatchfile">
 <p>You may run a batch file by specifying the filename directly in the <tt>Filename</tt> parameter of a [Run] section entry:</p>
 <p><tt>
 <b>[Run]</b><br />
 <span class="key">Filename</span>: "{app}\YourBatchFile.bat"</tt></p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="mutexsessions">Detecting instances running in any user session with AppMutex</a></h4>
-<blockquote>
+<details>
+<summary>Detecting instances running in any user session with AppMutex</summary>
+<div id="mutexsessions">
 <p><tt>AppMutex</tt> by default will not find mutexes created in user sessions other than the one Setup/Uninstall is running under. This is because each user session has its own kernel namespace.</p>
 <p>To detect mutexes created in other sessions, your application must create two mutexes: one with a <tt>Global\</tt> prefix and the other without.</p>
 <p>Mutexes with the <tt>Global\</tt> prefix are accessible from any user session. A like-named mutex must also be created in the session namespace (i.e. without the <tt>Global\</tt> prefix) in case the creation of the Global mutex failed due to security restrictions.</p>
@@ -498,31 +512,39 @@ URL=http://web.site.address/
 <p><tt>
 <b>[Setup]</b><br />
 <span class="key">AppMutex</span>=<b>YourMutexNameGoesHere</b>,Global\<b>YourMutexNameGoesHere</b></tt></p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="ocx">Installing OCX Files</a></h4>
-<blockquote>
+<details>
+<summary>Installing OCX Files</summary>
+<div id="ocx">
 <p>The recommended way to install an OCX file is as follows.</p>
 <p><tt>
 <b>[Files]</b><br />
 <span class="key">Source</span>: "ComCtl32.ocx";	<span class="key">DestDir</span>: "{sys}";	<span class="key">Flags</span>: restartreplace sharedfile regserver
 </tt></p>
-</blockquote>
+</div>
+</details>
 
 
 
-<h2>Compatibility</h2>
+<h2 id="compatibility">Compatibility</h2>
 
-<h4><a name="oscompat">OS Compatibility</a></h4>
-<blockquote>
+<p class="expand-all" hidden><button type="button" class="button compact">Expand all</button></p>
+
+<details>
+<summary>OS Compatibility</summary>
+<div id="oscompat">
 <p>See the <a href="https://jrsoftware.org/inno-setup#features">About page</a>.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="ntsecur">Administrative Privileges</a></h4>
-<blockquote>
+<details>
+<summary>Administrative Privileges</summary>
+<div id="ntsecur">
 <p>A typical Inno Setup installation does not require administrative privileges. However, there are exceptions as noted below.</p>
 <p>Things that require administrative privileges:</p>
-<ul>
+<ul class="block-bullets">
 <li>Using "PrivilegesRequired=admin" in the script's [Setup] section. This causes Setup to abort with an error message if the user lacks administrative privileges.</li>
 <li>Using the "restartreplace" flag in the [Files] section. This flag causes Inno Setup to call the MoveFileEx function, which attempts to write to "HKEY_LOCAL_MACHINE\ SYSTEM\ CurrentControlSet\ Control\ Session Manager". Write access to this key is restricted to Administrators.</li>
 <li>Writing to any key under HKEY_USERS\.DEFAULT using the [Registry] section. Write access to this key is restricted to Administrators.</li>
@@ -532,22 +554,26 @@ URL=http://web.site.address/
 </ul>
 <p>Inno Setup itself does not require write access to the Windows directory, or any other registry key not mentioned above.</p>
 <p>What is different when an installation is run by a user <i>without</i> administrative privileges?</p>
-<ul>
+<ul class="block-bullets">
 <li>The registry key for the <i>Add/Remove Programs</i> Control Panel entry is created under HKEY_CURRENT_USER instead of HKEY_LOCAL_MACHINE. Thus, only the user who installed the program will see an <i>Add/Remove Programs</i> entry for it.</li>
 <li>The "{group}" constant always points to the current user's profile, as opposed to the All Users profile.</li>
 <li>The program may be uninstalled by any user. (When an administrator installs a program, only an administrator is allowed to uninstall it.)</li>
 </ul>
 <p>Also see the <a href="https://jrsoftware.org/inno-setup/documentation/?topic=admininstallmode">Non Administrative Install Mode topic</a> in the documentation for details.</p>
-</blockquote>
+</div>
+</details>
 
 
 
-<h2>Miscellaneous</h2>
+<h2 id="miscellaneous">Miscellaneous</h2>
 
-<h4><a name="deploylicense">How do I automatically deploy our commercial license key to a user?</a></h4>
-<blockquote>
+<p class="expand-all" hidden><button type="button" class="button compact">Expand all</button></p>
+
+<details>
+<summary>How do I automatically deploy our commercial license key to a user?</summary>
+<div id="deploylicense">
 <p>Your license key can be activated for a user by writing it as a single line to the following registry key:</p>
-<ul>
+<ul class="block-bullets">
 <li>Key: <tt>HKEY_CURRENT_USER\Software\Jordan Russell\Inno Setup\License</tt></li>
 <li>Name: <tt>LicenseKey</tt></li>
 <li>Type: <tt>REG_SZ</tt></li>
@@ -555,51 +581,66 @@ URL=http://web.site.address/
 <p>You can do this before or after installation, or even while Inno Setup is running.</p>
 <p>A license key is a string of at least 108 characters. It always starts with 'in' and ends with 'no', without the quotes. To users the key is presented as multiple lines of 28 characters per line.</p>
 <p>Our rules for who counts as a user are explained on <a href="https://jrsoftware.org/inno-setup/purchase#howmanylicenses">our order page</a>.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="limits">Are there any limits on how many files, etc. may be included in an installation?</a></h4>
-<blockquote>
+<details>
+<summary>Are there any limits on how many files, etc. may be included in an installation?</summary>
+<div id="limits">
 <p>Inno Setup places no arbitrary limits on how many files, shortcuts, registry entries, etc. that you may include in an installation.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="cancel">What exactly happens when the user clicks Cancel during an installation?</a></h4>
-<blockquote>
+<details>
+<summary>What exactly happens when the user clicks Cancel during an installation?</summary>
+<div id="cancel">
 <p>When Cancel is clicked, Setup will begin reverting changes it's made so far in the very same manner as the Uninstall program. Thus, a partially installed application isn't left over.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="uninsttemp">What's this _iu14D2N.tmp file in my TEMP directory?</a></h4>
-<blockquote>
+<details>
+<summary>What's this _iu14D2N.tmp file in my TEMP directory?</summary>
+<div id="uninsttemp">
 <p>A temporary file with a name like "_iu14D2N.tmp" is created when you uninstall a program that used Inno Setup as its installer. The reason the file remains in the directory after the uninstall process has completed is that Windows does not allow running executables to delete themselves. So what it does is schedule the file to be deleted automatically the next time your computer is restarted. If you don't want to wait until then, it is perfectly safe to delete the file manually, provided no uninstallers are currently running.</p>
 <p>Note that this behavior is not unique to Inno Setup.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="regreplace">Why does Setup register files when they aren't replaced?</a></h4>
-<blockquote>
+<details>
+<summary>Why does Setup register files when they aren't replaced?</summary>
+<div id="regreplace">
 <p>When a file has the <tt>regserver</tt> flag, Setup will try to register the file even if it wasn't replaced during the installation (e.g., if the existing file was a newer version).</p>
 <p>This behavior might on the surface seem superfluous, but in fact it's quite necessary. Whoever installed the file in the first place may not have registered it. Or, the existing file may somehow have gotten unregistered without being deleted. If Setup only registered files that were replaced, then in both of these cases the file would remain in an unregistered state at the end of installation, and your application wouldn't work.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="uninstallername">Why has the uninstaller EXE numbers in its name?</a></h4>
-<blockquote>
+<details>
+<summary>Why has the uninstaller EXE numbers in its name?</summary>
+<div id="uninstallername">
 <p>Frequently new users wonder why the uninstaller EXE has numbers in its name (e.g. unins000.exe).</p>
 <p>It is because Inno Setup allows multiple applications to be installed to the same directory. When that happens, the first application's uninstaller is named unins000.exe, the second application's uninstaller is named unins001.exe, and so on. If a fixed name were used, then it would only be possible to uninstall the most recently installed application.</p>
-</blockquote>
+</div>
+</details>
 
-<h4><a name="redistribute">Am I allowed to redistribute the Inno Setup compiler with my application?</a></h4>
-<blockquote>
+<details>
+<summary>Am I allowed to redistribute the Inno Setup compiler with my application?</summary>
+<div id="redistribute">
 <p>If your application needs to create installations on the fly, it is permissible to deploy the files for the Inno Setup compiler along with it, provided the terms of the Inno Setup <a href="https://jrsoftware.org/files/is/license.txt">license</a> are followed.</p>
-</blockquote>
+</div>
+</details>
 
 <script>
-// Add ids to <h4> from their inner <a name="..."> so :target can highlight sections
+// For a browser that doesn't open the card of the question that the address links to
 (function() {
-  var anchors = document.querySelectorAll('h4 > a[name]');
-  anchors.forEach(function(a) {
-    var h4 = a.parentElement;
-    var name = a.getAttribute('name');
-    if (name && h4 && !h4.id) {
-      h4.id = name;
+  function openTargetCard() {
+    var target = document.querySelector(':target');
+    var card = target && target.closest('details');
+    if (card && !card.open) {
+      card.open = true;
+      target.scrollIntoView();
     }
-  });
+  }
+  window.addEventListener('load', openTargetCard);
+  window.addEventListener('hashchange', openTargetCard);
 })();
 </script>
